@@ -20,14 +20,32 @@
 
 ## 🚀 快速开始
 
-### 1. 安装依赖
+### 方法一：Docker 部署（推荐）
+
+```bash
+cd website
+
+# 一键部署
+make deploy
+
+# 或使用脚本
+./docker-run.sh
+```
+
+访问 `http://localhost:5000`
+
+详细 Docker 部署指南请查看 [DOCKER.md](DOCKER.md)
+
+### 方法二：本地开发
+
+#### 1. 安装依赖
 
 ```bash
 cd website
 pip install -r requirements.txt
 ```
 
-### 2. 生成题目元数据
+#### 2. 生成题目元数据
 
 ```bash
 python generate_challenge_metadata.py
@@ -35,15 +53,21 @@ python generate_challenge_metadata.py
 
 这将扫描所有挑战题目并生成 `challenges.json` 文件。
 
-### 3. 启动Web服务器
+#### 3. 启动Web服务器
 
 ```bash
 python app.py
+
+# 或使用启动脚本
+./start.sh
+
+# 或使用 Makefile
+make dev
 ```
 
 服务器将在 `http://localhost:5000` 启动。
 
-### 4. 访问网站
+#### 4. 访问网站
 
 在浏览器中打开 `http://localhost:5000`，开始使用！
 

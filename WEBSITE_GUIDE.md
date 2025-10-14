@@ -35,14 +35,46 @@
 
 ## 🚀 快速启动
 
-### 方法一：使用启动脚本（推荐）
+### 方法一：Docker 部署（推荐生产环境）
 
 ```bash
 cd website
-./start.sh
+
+# 方式 1: 一键部署
+make deploy
+
+# 方式 2: 使用 Docker Compose
+docker-compose up -d
+
+# 方式 3: 使用启动脚本
+./docker-run.sh
+
+# 方式 4: 手动构建和运行
+./build-image.sh   # 构建镜像
+docker run -d -p 5000:5000 --name leetgpu-website leetgpu/website:latest
 ```
 
-### 方法二：手动启动
+**Docker 优势**:
+- ✅ 环境隔离，无需安装 Python 依赖
+- ✅ 一键部署，简化运维
+- ✅ 跨平台支持（Linux/Mac/Windows）
+- ✅ 易于扩展和迁移
+
+详细 Docker 部署指南请查看 [DOCKER.md](website/DOCKER.md)
+
+### 方法二：本地开发（推荐开发环境）
+
+```bash
+cd website
+
+# 快速启动
+./start.sh
+
+# 或使用 Makefile
+make quick
+```
+
+### 方法三：手动启动
 
 ```bash
 # 1. 进入网站目录
@@ -71,7 +103,22 @@ website/
 ├── challenges.json                 # 题目元数据（自动生成）
 ├── requirements.txt                # Python依赖
 ├── README.md                       # 详细文档
-├── start.sh                        # 快速启动脚本
+├── DOCKER.md                       # Docker完整部署指南
+│
+├── 启动脚本/
+│   ├── start.sh                   # 快速启动脚本（本地）
+│   ├── docker-run.sh              # Docker 快速启动
+│   ├── build-image.sh             # Docker 镜像构建脚本
+│   ├── push-image.sh              # Docker 镜像推送脚本
+│   └── test-docker.sh             # Docker 测试脚本
+│
+├── Docker 配置/
+│   ├── Dockerfile                 # 开发版 Dockerfile
+│   ├── Dockerfile.prod            # 生产版 Dockerfile（多阶段构建）
+│   ├── docker-compose.yml         # Docker Compose 配置
+│   ├── .dockerignore              # Docker 忽略文件
+│   ├── .env.example               # 环境变量示例
+│   └── Makefile                   # 常用命令快捷方式
 │
 ├── templates/                      # HTML模板
 │   ├── index.html                 # 主页 - 题库列表
