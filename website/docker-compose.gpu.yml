@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  leetgpu-web-gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu.prod
+    container_name: leetgpu-website-gpu
+    ports:
+      - "5000:5000"
+    volumes:
+      # 挂载题目目录（只读）
+      - ../challenges:/app/../challenges:ro
+      # 挂载元数据文件（可选）
+      - ./challenges.json:/app/challenges.json
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+      - CUDA_VISIBLE_DEVICES=all
+    restart: unless-stopped
+    networks:
+      - leetgpu-network
+    # GPU 支持（需要 nvidia-docker）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    runtime: nvidia
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/api/stats')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "com.leetgpu.description=LeetGPU Online Testing Website - GPU Edition"
+      - "com.leetgpu.version=1.0-gpu"
+      - "com.leetgpu.cuda=12.8.1"
+
+networks:
+  leetgpu-network:
+    driver: bridge
+
+# 可选：添加 Nginx 反向代理
+# nginx:
+#   image: nginx:alpine
+#   container_name: leetgpu-nginx
+#   ports:
+#     - "80:80"
+#     - "443:443"
+#   volumes:
+#     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#   depends_on:
+#     - leetgpu-web-gpu
+#   networks:
+#     - leetgpu-network
+#   restart: unless-stopped

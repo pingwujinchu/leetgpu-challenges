@@ -22,6 +22,7 @@
 
 ### 方法一：Docker 部署（推荐）
 
+#### CPU 版本
 ```bash
 cd website
 
@@ -32,9 +33,26 @@ make deploy
 ./docker-run.sh
 ```
 
+#### GPU 版本（CUDA 12.8.1）⭐
+```bash
+cd website
+
+# 构建 GPU 镜像
+./build-gpu-image.sh
+
+# 或使用 Makefile
+make build-gpu-prod
+make run-gpu
+
+# 或使用 Compose
+make compose-gpu-up
+```
+
 访问 `http://localhost:5000`
 
-详细 Docker 部署指南请查看 [DOCKER.md](DOCKER.md)
+**文档链接**:
+- CPU 版本: [DOCKER.md](DOCKER.md)
+- GPU 版本: [GPU_DOCKER.md](GPU_DOCKER.md)
 
 ### 方法二：本地开发
 
