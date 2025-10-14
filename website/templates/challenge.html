@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>挑战详情 - LeetGPU</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🚀 LeetGPU</h1>
+                <p>GPU编程在线测试平台</p>
+            </div>
+            <div class="nav-links">
+                <a href="/">题库</a>
+                <a href="/quiz">随机测验</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <div class="challenge-detail">
+            <div class="challenge-header">
+                <a href="/" class="back-link">← 返回题库</a>
+                <h1 id="challenge-title">加载中...</h1>
+                <div class="challenge-meta">
+                    <span class="difficulty-badge" id="challenge-difficulty"></span>
+                    <span id="challenge-id"></span>
+                </div>
+            </div>
+
+            <div class="challenge-content" id="challenge-content">
+                <!-- Challenge HTML content will be loaded here -->
+            </div>
+
+            <div class="challenge-frameworks">
+                <h3>支持的框架</h3>
+                <div class="frameworks-list" id="frameworks-list">
+                    <!-- Frameworks will be loaded here -->
+                </div>
+            </div>
+
+            <div class="challenge-actions">
+                <button class="btn-primary" onclick="alert('此功能需要完整的编码环境支持')">开始编码</button>
+                <button class="btn-secondary" onclick="window.history.back()">返回</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 LeetGPU - GPU编程挑战平台</p>
+        </div>
+    </footer>
+
+    <script>
+        const challengeId = "{{ challenge_id }}";
+        
+        async function loadChallenge() {
+            try {
+                const response = await fetch(`/api/challenge/${challengeId}`);
+                const challenge = await response.json();
+                
+                document.getElementById('challenge-title').textContent = challenge.name;
+                document.getElementById('challenge-difficulty').textContent = challenge.difficulty;
+                document.getElementById('challenge-difficulty').className = `difficulty-badge difficulty-${challenge.difficulty}`;
+                document.getElementById('challenge-id').textContent = `ID: ${challenge.id}`;
+                document.getElementById('challenge-content').innerHTML = challenge.html_content;
+                
+                // Load frameworks
+                const frameworksList = document.getElementById('frameworks-list');
+                if (challenge.frameworks && challenge.frameworks.length > 0) {
+                    frameworksList.innerHTML = challenge.frameworks.map(fw => 
+                        `<span class="framework-tag">${fw}</span>`
+                    ).join('');
+                } else {
+                    frameworksList.innerHTML = '<p>暂无框架信息</p>';
+                }
+            } catch (error) {
+                console.error('Error loading challenge:', error);
+                document.getElementById('challenge-content').innerHTML = '<p class="error">加载失败，请稍后再试</p>';
+            }
+        }
+        
+        loadChallenge();
+    </script>
+</body>
+</html>

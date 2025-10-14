@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机测验 - LeetGPU</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🚀 LeetGPU</h1>
+                <p>GPU编程在线测试平台</p>
+            </div>
+            <div class="nav-links">
+                <a href="/">题库</a>
+                <a href="/quiz" class="active">随机测验</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <div class="quiz-setup" id="quiz-setup">
+            <h2>📝 开始测验</h2>
+            <p>根据难度和题目数量生成随机测验</p>
+            
+            <div class="quiz-config">
+                <div class="config-group">
+                    <label for="quiz-difficulty">难度等级:</label>
+                    <select id="quiz-difficulty">
+                        <option value="all">全部难度</option>
+                        <option value="easy">简单</option>
+                        <option value="medium">中等</option>
+                        <option value="hard">困难</option>
+                    </select>
+                </div>
+                
+                <div class="config-group">
+                    <label for="quiz-count">题目数量:</label>
+                    <input type="number" id="quiz-count" min="5" max="50" value="10" />
+                </div>
+                
+                <button class="btn-primary" onclick="startQuiz()">开始测验</button>
+            </div>
+        </div>
+
+        <div class="quiz-container" id="quiz-container" style="display: none;">
+            <div class="quiz-header">
+                <h2>测验进行中</h2>
+                <div class="quiz-progress">
+                    <span id="quiz-current">1</span> / <span id="quiz-total">10</span>
+                </div>
+                <div class="quiz-timer" id="quiz-timer">00:00</div>
+            </div>
+
+            <div class="quiz-question" id="quiz-question">
+                <!-- Question will be loaded here -->
+            </div>
+
+            <div class="quiz-controls">
+                <button class="btn-secondary" onclick="previousQuestion()" id="prev-btn">上一题</button>
+                <button class="btn-primary" onclick="nextQuestion()" id="next-btn">下一题</button>
+                <button class="btn-success" onclick="submitQuiz()" id="submit-btn" style="display: none;">提交答案</button>
+            </div>
+
+            <div class="quiz-navigation">
+                <div id="quiz-nav-dots"></div>
+            </div>
+        </div>
+
+        <div class="quiz-results" id="quiz-results" style="display: none;">
+            <h2>🎉 测验完成！</h2>
+            <div class="results-summary" id="results-summary"></div>
+            <button class="btn-primary" onclick="location.reload()">重新开始</button>
+            <a href="/" class="btn-secondary">返回题库</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 LeetGPU - GPU编程挑战平台</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='quiz.js') }}"></script>
+</body>
+</html>
