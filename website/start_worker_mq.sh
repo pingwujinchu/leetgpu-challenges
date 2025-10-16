@@ -1,10 +1,11 @@
 #!/bin/bash
 # 启动GPU Worker节点（消息队列版本）
+# 支持跨机器部署
 
 # 默认参数
 WORKER_ID="gpu-worker-1"
 GPU_ID=0
-REDIS_HOST="localhost"
+REDIS_HOST="localhost"  # 生产环境改为主节点IP，如: 192.168.1.100
 REDIS_PORT=6379
 REDIS_DB=0
 
