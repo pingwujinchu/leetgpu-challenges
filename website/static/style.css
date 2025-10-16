@@ -652,6 +652,40 @@ body {
     border-radius: 4px;
 }
 
+.ray-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 8px;
+}
+
+.ray-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.ray-description {
+    flex: 1;
+}
+
+.ray-description strong {
+    display: block;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.ray-description p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
 .challenge-actions {
     display: flex;
     gap: 1rem;
