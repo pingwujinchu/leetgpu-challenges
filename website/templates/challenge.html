@@ -42,6 +42,100 @@
                 </div>
             </div>
 
+            <div class="challenge-environment">
+                <h3>🚀 题目运行环境</h3>
+                <div class="env-notice">
+                    <span class="notice-icon">🏗️</span>
+                    <div class="notice-content">
+                        <strong>主从架构 (Master-Worker)</strong>
+                        <p>主网站运行在CPU机器上负责任务分发和控制，从节点运行在GPU机器上接收任务并根据资源情况执行</p>
+                    </div>
+                </div>
+                
+                <div class="environment-info">
+                    <div class="env-section architecture-section">
+                        <h4>🔄 系统架构</h4>
+                        <div class="architecture-flow">
+                            <div class="arch-node master-node">
+                                <div class="node-icon">🖥️</div>
+                                <div class="node-info">
+                                    <strong>主节点 (Master)</strong>
+                                    <p>CPU机器 - 任务分发与控制</p>
+                                </div>
+                            </div>
+                            <div class="arch-arrow">→</div>
+                            <div class="arch-node worker-node">
+                                <div class="node-icon">🎮</div>
+                                <div class="node-info">
+                                    <strong>从节点 (Worker)</strong>
+                                    <p>GPU机器 - 接收任务并执行</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="architecture-details">
+                            <div class="arch-detail">
+                                <span class="detail-icon">📤</span>
+                                <p><strong>主节点职责:</strong> 接收题目提交请求，使用Ray将任务分发到合适的GPU从节点</p>
+                            </div>
+                            <div class="arch-detail">
+                                <span class="detail-icon">📥</span>
+                                <p><strong>从节点职责:</strong> 接收任务后判断本地GPU资源（显存、计算能力），确定是否可以运行并执行</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="env-section">
+                        <h4>📦 Docker 镜像</h4>
+                        <div class="docker-info">
+                            <p><strong>基础镜像:</strong></p>
+                            <code class="docker-image">micr.cloud.mioffice.cn/cloudml-preset/cuda:12.8.1-py3.12-ubuntu22.04-0.1</code>
+                            <div class="image-details">
+                                <span class="detail-tag">🐍 Python 3.12</span>
+                                <span class="detail-tag">🎮 CUDA 12.8.1</span>
+                                <span class="detail-tag">🐧 Ubuntu 22.04</span>
+                            </div>
+                            <p class="docker-note">从节点使用此Docker镜像运行题目代码，支持CUDA加速计算</p>
+                        </div>
+                    </div>
+                    
+                    <div class="env-section">
+                        <h4>🎮 GPU 节点选择</h4>
+                        <p class="env-description">您可以选择具体的GPU型号，主节点会将任务分发到对应型号的从节点。从节点会根据当前资源情况（显存占用、GPU利用率等）判断是否执行任务。</p>
+                        <div class="gpu-selector-container">
+                            <label for="challenge-gpu-select">选择目标GPU型号:</label>
+                            <select id="challenge-gpu-select" class="gpu-select">
+                                <option value="">自动分配（由主节点选择可用从节点）</option>
+                                <optgroup label="NVIDIA - 消费级">
+                                    <option value="RTX 4090">RTX 4090 (24GB, Compute 8.9)</option>
+                                    <option value="RTX 4080">RTX 4080 (16GB, Compute 8.9)</option>
+                                    <option value="RTX 3090">RTX 3090 (24GB, Compute 8.6)</option>
+                                    <option value="RTX 3080">RTX 3080 (10GB, Compute 8.6)</option>
+                                </optgroup>
+                                <optgroup label="NVIDIA - 数据中心">
+                                    <option value="H100">H100 (80GB, Compute 9.0)</option>
+                                    <option value="A100">A100 (40GB/80GB, Compute 8.0)</option>
+                                    <option value="V100">V100 (16GB/32GB, Compute 7.0)</option>
+                                    <option value="T4">T4 (16GB, Compute 7.5)</option>
+                                </optgroup>
+                                <optgroup label="AMD">
+                                    <option value="MI300X">MI300X (192GB, CDNA3)</option>
+                                    <option value="MI250X">MI250X (128GB, CDNA2)</option>
+                                    <option value="RX 7900 XTX">RX 7900 XTX (24GB, RDNA3)</option>
+                                </optgroup>
+                            </select>
+                            <p class="gpu-hint">💡 选择特定GPU型号后，主节点会分发到对应从节点。从节点会检查资源后决定是否运行，资源不足时会返回错误或等待。</p>
+                        </div>
+                        <div class="ray-info">
+                            <span class="ray-icon">⚡</span>
+                            <div class="ray-description">
+                                <strong>Ray 分布式调度</strong>
+                                <p>使用Ray框架实现主从节点通信、任务分发和资源管理，支持智能负载均衡和故障恢复。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="challenge-actions">
                 <button class="btn-primary" onclick="alert('此功能需要完整的编码环境支持')">开始编码</button>
                 <button class="btn-secondary" onclick="window.history.back()">返回</button>
