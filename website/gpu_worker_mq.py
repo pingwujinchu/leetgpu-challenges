@@ -18,7 +18,7 @@ from message_queue import get_message_queue
 class GPUWorkerMQ:
     """GPU Worker节点（消息队列版本）- 从消息队列拉取任务执行"""
     
-    def __init__(self, worker_id: str, gpu_device_id: int = 0,
+    def __init__(self, worker_id: str, gpu_device_id: int = 0, gpu_model: str = None,
                  redis_host: str = 'localhost', redis_port: int = 6379, redis_db: int = 0):
         """
         初始化GPU Worker
@@ -26,12 +26,14 @@ class GPUWorkerMQ:
         Args:
             worker_id: Worker唯一标识
             gpu_device_id: GPU设备ID
+            gpu_model: GPU型号（如'RTX 4090'），Worker只拉取此型号的任务
             redis_host: Redis主机地址
             redis_port: Redis端口
             redis_db: Redis数据库编号
         """
         self.worker_id = worker_id
         self.gpu_device_id = gpu_device_id
+        self.gpu_model = gpu_model  # GPU型号
         self.cuda_wrapper = CudaJITWrapper()
         self.gpu_monitor = GPUMonitor(simulation_mode=True)  # 默认使用模拟模式
         
@@ -52,6 +54,7 @@ class GPUWorkerMQ:
         
         print(f"🔧 GPU Worker {worker_id} 已初始化（消息队列模式）")
         print(f"   使用GPU设备: {gpu_device_id}")
+        print(f"   GPU型号: {gpu_model if gpu_model else '通用（所有型号）'}")
         print(f"   队列后端: {'Redis' if self.message_queue.connected else '内存模式'}")
     
     def check_resources(self) -> bool:
@@ -226,7 +229,7 @@ class GPUWorkerMQ:
         print(f"🛑 Worker {self.worker_id} 已停止")
     
     def _worker_loop(self):
-        """工作循环 - 持续从队列拉取任务"""
+        """工作循环 - 持续从队列拉取任务（只拉取匹配GPU型号的任务）"""
         while self.running:
             try:
                 # 检查资源是否充足
@@ -235,8 +238,10 @@ class GPUWorkerMQ:
                     time.sleep(5)
                     continue
                 
-                # 从消息队列拉取任务（阻塞1秒）
-                task_data = self.message_queue.pull_task(timeout=1)
+                # 从消息队列拉取任务（只拉取匹配GPU型号的任务）
+                # 如果指定了GPU型号，只拉取该型号的队列
+                gpu_models = [self.gpu_model] if self.gpu_model else None
+                task_data = self.message_queue.pull_task(gpu_models=gpu_models, timeout=1)
                 
                 if task_data:
                     self.is_busy = True
@@ -296,6 +301,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GPU Worker节点（消息队列版本）')
     parser.add_argument('--id', type=str, required=True, help='Worker ID')
     parser.add_argument('--gpu', type=int, default=0, help='GPU设备ID')
+    parser.add_argument('--gpu-model', type=str, default=None, 
+                        help='GPU型号（如RTX 4090），只拉取此型号的任务')
     parser.add_argument('--redis-host', type=str, default='localhost', help='Redis主机')
     parser.add_argument('--redis-port', type=int, default=6379, help='Redis端口')
     parser.add_argument('--redis-db', type=int, default=0, help='Redis数据库')
@@ -306,6 +313,7 @@ if __name__ == '__main__':
     worker = GPUWorkerMQ(
         worker_id=args.id,
         gpu_device_id=args.gpu,
+        gpu_model=args.gpu_model,
         redis_host=args.redis_host,
         redis_port=args.redis_port,
         redis_db=args.redis_db

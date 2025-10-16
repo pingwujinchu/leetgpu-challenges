@@ -1,10 +1,11 @@
 #!/bin/bash
 # 启动GPU Worker节点（消息队列版本）
-# 支持跨机器部署
+# 支持跨机器部署和GPU型号路由
 
 # 默认参数
 WORKER_ID="gpu-worker-1"
 GPU_ID=0
+GPU_MODEL=""  # GPU型号，如: "RTX 4090"
 REDIS_HOST="localhost"  # 生产环境改为主节点IP，如: 192.168.1.100
 REDIS_PORT=6379
 REDIS_DB=0
@@ -18,6 +19,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --gpu)
             GPU_ID="$2"
+            shift 2
+            ;;
+        --gpu-model)
+            GPU_MODEL="$2"
             shift 2
             ;;
         --redis-host)
@@ -38,6 +43,7 @@ while [[ $# -gt 0 ]]; do
             echo "选项:"
             echo "  --id <worker_id>        Worker ID (默认: gpu-worker-1)"
             echo "  --gpu <gpu_id>          GPU设备ID (默认: 0)"
+            echo "  --gpu-model <model>     GPU型号 (例: 'RTX 4090'，只拉取此型号任务)"
             echo "  --redis-host <host>     Redis主机 (默认: localhost)"
             echo "  --redis-port <port>     Redis端口 (默认: 6379)"
             echo "  --redis-db <db>         Redis数据库 (默认: 0)"
@@ -58,6 +64,7 @@ echo "（消息队列模式）"
 echo "======================================"
 echo "Worker ID: $WORKER_ID"
 echo "GPU设备: $GPU_ID"
+echo "GPU型号: ${GPU_MODEL:-通用（所有型号）}"
 echo "Redis: $REDIS_HOST:$REDIS_PORT/$REDIS_DB"
 echo "======================================"
 
@@ -78,9 +85,13 @@ echo ""
 echo "启动Worker节点..."
 echo ""
 
-python3 gpu_worker_mq.py \
-    --id "$WORKER_ID" \
-    --gpu "$GPU_ID" \
-    --redis-host "$REDIS_HOST" \
-    --redis-port "$REDIS_PORT" \
-    --redis-db "$REDIS_DB"
+# 构建启动命令
+CMD="python3 gpu_worker_mq.py --id \"$WORKER_ID\" --gpu \"$GPU_ID\" --redis-host \"$REDIS_HOST\" --redis-port \"$REDIS_PORT\" --redis-db \"$REDIS_DB\""
+
+# 如果指定了GPU型号，添加参数
+if [ -n "$GPU_MODEL" ]; then
+    CMD="$CMD --gpu-model \"$GPU_MODEL\""
+fi
+
+# 执行命令
+eval $CMD

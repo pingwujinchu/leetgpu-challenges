@@ -121,11 +121,14 @@ class TaskManagerMQ:
             'created_at': task.created_at.isoformat()
         }
         
-        # 推送到消息队列
-        success = self.message_queue.push_task(task_data)
+        # 推送到消息队列（根据GPU型号路由）
+        success = self.message_queue.push_task(task_data, gpu_model=gpu_model)
         
         if success:
-            print(f"✅ 任务 {task_id} 已推送到消息队列")
+            if gpu_model:
+                print(f"✅ 任务 {task_id} 已推送到 {gpu_model} 队列")
+            else:
+                print(f"✅ 任务 {task_id} 已推送到通用队列")
         else:
             print(f"❌ 任务 {task_id} 推送失败")
             task.status = TaskStatus.FAILED

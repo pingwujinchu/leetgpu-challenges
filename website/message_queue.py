@@ -29,7 +29,8 @@ class MessageQueue:
         self.connected = False
         
         # 队列名称
-        self.TASK_QUEUE = 'leetgpu:tasks:queue'
+        self.TASK_QUEUE = 'leetgpu:tasks:queue'  # 通用队列
+        self.TASK_QUEUE_PREFIX = 'leetgpu:tasks:queue:'  # GPU型号特定队列
         self.RESULT_PREFIX = 'leetgpu:results:'
         self.WORKER_STATUS_PREFIX = 'leetgpu:workers:status:'
         
@@ -65,12 +66,13 @@ class MessageQueue:
         self._memory_results = {}
         self._memory_worker_status = {}
     
-    def push_task(self, task_data: Dict[str, Any]) -> bool:
+    def push_task(self, task_data: Dict[str, Any], gpu_model: str = None) -> bool:
         """
-        推送任务到队列
+        推送任务到队列（支持GPU型号路由）
         
         Args:
             task_data: 任务数据字典
+            gpu_model: 指定的GPU型号，如果为None则推送到通用队列
             
         Returns:
             是否推送成功
@@ -78,10 +80,19 @@ class MessageQueue:
         try:
             task_json = json.dumps(task_data)
             
+            # 确定队列名称
+            if gpu_model:
+                # 推送到特定GPU型号的队列
+                queue_name = f"{self.TASK_QUEUE_PREFIX}{gpu_model}"
+                print(f"📤 任务推送到 {gpu_model} 队列: {task_data['task_id']}")
+            else:
+                # 推送到通用队列
+                queue_name = self.TASK_QUEUE
+                print(f"📤 任务推送到通用队列: {task_data['task_id']}")
+            
             if self.connected:
                 # 使用Redis队列
-                self.redis_client.rpush(self.TASK_QUEUE, task_json)
-                print(f"📤 任务已推送到队列: {task_data['task_id']}")
+                self.redis_client.rpush(queue_name, task_json)
                 return True
             else:
                 # 使用内存队列
@@ -93,11 +104,14 @@ class MessageQueue:
             print(f"❌ 推送任务失败: {e}")
             return False
     
-    def pull_task(self, timeout: int = 1) -> Optional[Dict[str, Any]]:
+    def pull_task(self, gpu_models: list = None, timeout: int = 1) -> Optional[Dict[str, Any]]:
         """
-        从队列拉取任务（阻塞）
+        从队列拉取任务（支持GPU型号过滤）
+        Worker可以指定支持的GPU型号，只拉取匹配的任务
         
         Args:
+            gpu_models: 支持的GPU型号列表，例如 ['RTX 4090', 'RTX 4080']
+                       如果为None，则从通用队列拉取
             timeout: 超时时间（秒）
             
         Returns:
@@ -105,12 +119,31 @@ class MessageQueue:
         """
         try:
             if self.connected:
-                # 使用Redis队列（阻塞拉取）
-                result = self.redis_client.blpop(self.TASK_QUEUE, timeout=timeout)
+                # 构建要监听的队列列表
+                queues = []
+                
+                if gpu_models:
+                    # 添加特定GPU型号的队列
+                    for model in gpu_models:
+                        queues.append(f"{self.TASK_QUEUE_PREFIX}{model}")
+                
+                # 始终包含通用队列（优先级最低）
+                queues.append(self.TASK_QUEUE)
+                
+                # 使用BLPOP从多个队列拉取（按顺序优先级）
+                result = self.redis_client.blpop(queues, timeout=timeout)
+                
                 if result:
-                    _, task_json = result
+                    queue_name, task_json = result
                     task_data = json.loads(task_json)
-                    print(f"📥 从队列拉取任务: {task_data['task_id']}")
+                    
+                    # 判断从哪个队列拉取
+                    if queue_name.startswith(self.TASK_QUEUE_PREFIX):
+                        gpu_model = queue_name.replace(self.TASK_QUEUE_PREFIX, '')
+                        print(f"📥 从 {gpu_model} 队列拉取任务: {task_data['task_id']}")
+                    else:
+                        print(f"📥 从通用队列拉取任务: {task_data['task_id']}")
+                    
                     return task_data
                 return None
             else:
@@ -260,20 +293,55 @@ class MessageQueue:
             print(f"⚠️  获取所有Worker状态失败: {e}")
             return {}
     
-    def get_queue_size(self) -> int:
+    def get_queue_size(self, gpu_model: str = None) -> int:
         """
         获取队列中的任务数量
         
+        Args:
+            gpu_model: GPU型号，如果为None则返回通用队列大小
+            
         Returns:
             任务数量
         """
         try:
             if self.connected:
-                return self.redis_client.llen(self.TASK_QUEUE)
+                if gpu_model:
+                    queue_name = f"{self.TASK_QUEUE_PREFIX}{gpu_model}"
+                else:
+                    queue_name = self.TASK_QUEUE
+                return self.redis_client.llen(queue_name)
             else:
                 return self._memory_queue.qsize()
         except:
             return 0
+    
+    def get_all_queue_sizes(self) -> Dict[str, int]:
+        """
+        获取所有队列的大小
+        
+        Returns:
+            队列大小字典 {queue_name: size}
+        """
+        try:
+            if self.connected:
+                sizes = {}
+                
+                # 通用队列
+                sizes['通用队列'] = self.redis_client.llen(self.TASK_QUEUE)
+                
+                # 所有GPU型号队列
+                pattern = f"{self.TASK_QUEUE_PREFIX}*"
+                keys = self.redis_client.keys(pattern)
+                
+                for key in keys:
+                    gpu_model = key.replace(self.TASK_QUEUE_PREFIX, '')
+                    sizes[gpu_model] = self.redis_client.llen(key)
+                
+                return sizes
+            else:
+                return {'内存队列': self._memory_queue.qsize()}
+        except:
+            return {}
     
     def clear_queue(self):
         """清空队列（慎用）"""
