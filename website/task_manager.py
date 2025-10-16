@@ -1,5 +1,6 @@
 """
-任务队列和分发系统 - 管理GPU任务的提交和分发
+任务队列和分发系统 - 基于消息队列的任务管理
+主节点通过消息队列推送任务，从节点拉取任务执行
 """
 
 import uuid
@@ -8,9 +9,10 @@ import requests
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 from enum import Enum
-from queue import Queue, Empty
 import threading
 import json
+
+from message_queue import get_message_queue
 
 
 class TaskStatus(Enum):
@@ -62,30 +64,39 @@ class Task:
 
 
 class TaskManager:
-    """任务管理器 - 负责任务的提交、分发和状态管理"""
+    """任务管理器 - 基于消息队列的任务管理"""
     
-    def __init__(self, workers_config: List[Dict]):
+    def __init__(self, workers_config: List[Dict], redis_host: str = 'localhost',
+                 redis_port: int = 6379, redis_db: int = 0):
         """
         初始化任务管理器
         
         Args:
             workers_config: Worker节点配置列表
+            redis_host: Redis主机地址
+            redis_port: Redis端口
+            redis_db: Redis数据库编号
         """
         self.workers = workers_config
         self.tasks = {}  # task_id -> Task
-        self.task_queue = Queue()
         self.running_tasks = {}  # task_id -> worker_id
         self.worker_status = {w['id']: 'available' for w in workers_config}
         
-        # 启动任务分发线程
-        self.dispatcher_running = False
-        self.dispatcher_thread = None
+        # 初始化消息队列
+        self.message_queue = get_message_queue(redis_host, redis_port, redis_db)
+        
+        print(f"📮 任务管理器已初始化（消息队列模式）")
+        print(f"   队列后端: {'Redis' if self.message_queue.connected else '内存模式'}")
+        
+        # 启动结果监控线程
+        self.monitor_running = False
+        self.monitor_thread = None
     
     def submit_task(self, code: str, inputs: List[Any], 
                    grid_size: tuple, block_size: tuple,
                    gpu_model: Optional[str] = None) -> str:
         """
-        提交新任务
+        提交新任务到消息队列
         
         Args:
             code: CUDA代码
@@ -102,7 +113,27 @@ class TaskManager:
         
         self.tasks[task_id] = task
         task.status = TaskStatus.QUEUED
-        self.task_queue.put(task)
+        
+        # 准备任务数据
+        task_data = {
+            'task_id': task.task_id,
+            'code': task.code,
+            'inputs': task.inputs,
+            'grid_size': list(task.grid_size),
+            'block_size': list(task.block_size),
+            'gpu_model': task.gpu_model,
+            'created_at': task.created_at.isoformat()
+        }
+        
+        # 推送到消息队列
+        success = self.message_queue.push_task(task_data)
+        
+        if success:
+            print(f"✅ 任务 {task_id} 已推送到消息队列")
+        else:
+            print(f"❌ 任务 {task_id} 推送失败")
+            task.status = TaskStatus.FAILED
+            task.error = "推送到消息队列失败"
         
         return task_id
     
