@@ -125,9 +125,58 @@ class TaskManager:
         """获取所有任务状态"""
         return [task.to_dict() for task in self.tasks.values()]
     
+    def check_worker_resources(self, worker: Dict) -> bool:
+        """
+        检查Worker的GPU资源是否可用
+        
+        Args:
+            worker: Worker配置字典
+            
+        Returns:
+            如果资源充足返回True，否则返回False
+        """
+        try:
+            # 查询Worker的GPU状态
+            status_url = f"http://{worker['host']}:{worker['port']}/gpu/status"
+            response = requests.get(status_url, timeout=2)
+            
+            if response.status_code == 200:
+                gpu_status = response.json()
+                
+                # 检查显存利用率
+                memory_util = gpu_status.get('memory_utilization', 0)
+                gpu_util = gpu_status.get('gpu_utilization', 0)
+                
+                # 从config导入阈值（如果不存在则使用默认值）
+                try:
+                    from config import GPU_MEMORY_THRESHOLD, GPU_UTILIZATION_THRESHOLD
+                except ImportError:
+                    GPU_MEMORY_THRESHOLD = 90
+                    GPU_UTILIZATION_THRESHOLD = 95
+                
+                # 如果显存利用率或GPU利用率超过阈值，则不可用
+                if memory_util >= GPU_MEMORY_THRESHOLD:
+                    print(f"Worker {worker['id']} 显存利用率 {memory_util:.1f}% 超过阈值 {GPU_MEMORY_THRESHOLD}%，任务排队")
+                    return False
+                
+                if gpu_util >= GPU_UTILIZATION_THRESHOLD:
+                    print(f"Worker {worker['id']} GPU利用率 {gpu_util:.1f}% 超过阈值 {GPU_UTILIZATION_THRESHOLD}%，任务排队")
+                    return False
+                
+                return True
+            else:
+                # 无法获取状态，认为不可用
+                return False
+                
+        except Exception as e:
+            # 查询失败，认为不可用
+            print(f"检查Worker {worker['id']} 资源失败: {e}")
+            return False
+    
     def find_suitable_worker(self, task: Task) -> Optional[Dict]:
         """
         为任务找到合适的Worker节点
+        检查GPU显存和利用率，超过阈值则不分配
         
         Args:
             task: 任务对象
@@ -138,14 +187,22 @@ class TaskManager:
         # 如果指定了GPU型号，优先选择该型号的Worker
         if task.gpu_model:
             for worker in self.workers:
-                if (self.worker_status.get(worker['id']) == 'available' and
-                    worker['gpu_model'] == task.gpu_model):
-                    return worker
+                if self.worker_status.get(worker['id']) == 'available' and \
+                   worker['gpu_model'] == task.gpu_model:
+                    # 检查GPU资源是否充足
+                    if self.check_worker_resources(worker):
+                        return worker
+                    else:
+                        print(f"Worker {worker['id']} ({worker['gpu_model']}) 资源不足，继续查找...")
         
         # 否则选择任意可用的Worker
         for worker in self.workers:
             if self.worker_status.get(worker['id']) == 'available':
-                return worker
+                # 检查GPU资源是否充足
+                if self.check_worker_resources(worker):
+                    return worker
+                else:
+                    print(f"Worker {worker['id']} ({worker['gpu_model']}) 资源不足，继续查找...")
         
         return None
     

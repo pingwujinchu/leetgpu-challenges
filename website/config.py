@@ -48,3 +48,7 @@ REDIS_DB = 0
 
 # GPU监控配置
 GPU_MONITOR_INTERVAL = 2  # GPU监控间隔（秒）
+
+# GPU资源限制配置
+GPU_MEMORY_THRESHOLD = 90  # 显存利用率阈值（%），超过此值不分配新任务
+GPU_UTILIZATION_THRESHOLD = 95  # GPU利用率阈值（%），超过此值不分配新任务

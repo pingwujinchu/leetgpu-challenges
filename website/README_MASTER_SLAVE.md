@@ -12,6 +12,7 @@
 - **CUDA JIT封装**: 自动将Python代码编译为CUDA核函数
 - **GPU资源监控**: 实时监控GPU利用率、显存、温度、功耗
 - **智能任务分发**: 支持指定GPU型号或自动选择
+- **资源阈值检测**: 显存超过90%或GPU利用率超过95%时自动排队
 - **任务队列管理**: 自动分发和状态跟踪
 - **Web界面**: 实时显示GPU节点状态
 - **RESTful API**: 完整的HTTP接口
@@ -77,7 +78,14 @@ pip install -r requirements.txt
 python3 example_task_submission.py
 ```
 
-### 5. 运行测试
+### 5. 测试GPU阈值功能
+
+```bash
+# 测试资源阈值功能
+python3 test_gpu_threshold.py
+```
+
+### 6. 运行完整测试
 
 ```bash
 # 验证系统功能
@@ -280,6 +288,8 @@ python3 gpu_worker.py --id remote-gpu-1 --port 5001 --gpu 0 --host 0.0.0.0
 - ✅ **容错性**: Worker离线不影响主节点
 - ✅ **实时监控**: 5秒刷新的GPU状态
 - ✅ **智能调度**: 支持GPU型号选择和自动分配
+- ✅ **资源保护**: 显存超90%自动排队，避免OOM
+- ✅ **自动恢复**: 资源释放后任务自动分配
 - ✅ **模拟模式**: 无GPU环境也可测试
 - ✅ **易部署**: 一键启动脚本
 
