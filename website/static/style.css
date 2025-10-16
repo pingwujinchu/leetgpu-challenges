@@ -506,7 +506,30 @@ body {
 
 .challenge-environment h3 {
     color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.env-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
     margin-bottom: 1.5rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 8px;
+}
+
+.env-notice .notice-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.env-notice p {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .environment-info {
@@ -536,6 +559,12 @@ body {
 .docker-info p {
     margin: 0;
     color: var(--text-muted);
+}
+
+.docker-note {
+    margin-top: 0.5rem !important;
+    font-size: 0.9rem;
+    font-style: italic;
 }
 
 .docker-image {
