@@ -1,21 +1,35 @@
 #!/usr/bin/env python3
 """
-LeetGPU Online Testing Website - Flask Backend
+LeetGPU Online Testing Website - Flask Backend (Master Node)
+主节点服务器 - 负责任务分发和资源监控
 Supports different GPU models and provides a quiz interface for GPU programming challenges
 """
 
 from flask import Flask, render_template, jsonify, request, send_from_directory
+from flask_cors import CORS
 import json
 import os
 from pathlib import Path
+import numpy as np
+
+# 导入主从架构模块
+from config import GPU_WORKERS, MASTER_HOST, MASTER_PORT
+from task_manager import TaskManager
+from gpu_monitor import GPUMonitor
+import requests
 
 app = Flask(__name__, 
             static_folder='static',
             template_folder='templates')
+CORS(app)  # 启用CORS支持
 
 # Load challenges metadata
 CHALLENGES_FILE = 'challenges.json'
 challenges_data = []
+
+# 初始化任务管理器和GPU监控器
+task_manager = None
+gpu_monitor = None
 
 def load_challenges():
     global challenges_data
@@ -165,16 +179,187 @@ def challenge_page(challenge_id):
     """Individual challenge detail page"""
     return render_template('challenge.html', challenge_id=challenge_id)
 
+
+# ============= 主从架构新增API =============
+
+@app.route('/api/submit-task', methods=['POST'])
+def submit_task():
+    """提交GPU任务到Worker节点"""
+    data = request.json
+    
+    if not data:
+        return jsonify({'error': '缺少任务数据'}), 400
+    
+    code = data.get('code')
+    inputs = data.get('inputs', [])
+    grid_size = tuple(data.get('grid_size', [1]))
+    block_size = tuple(data.get('block_size', [1]))
+    gpu_model = data.get('gpu_model')
+    
+    if not code:
+        return jsonify({'error': '缺少代码'}), 400
+    
+    # 提交任务
+    task_id = task_manager.submit_task(
+        code=code,
+        inputs=inputs,
+        grid_size=grid_size,
+        block_size=block_size,
+        gpu_model=gpu_model
+    )
+    
+    return jsonify({
+        'task_id': task_id,
+        'status': 'queued',
+        'message': '任务已提交到队列'
+    })
+
+
+@app.route('/api/task/<task_id>')
+def get_task_status_route(task_id):
+    """获取任务状态"""
+    status = task_manager.get_task_status(task_id)
+    
+    if not status:
+        return jsonify({'error': '任务不存在'}), 404
+    
+    return jsonify(status)
+
+
+@app.route('/api/tasks')
+def get_all_tasks_route():
+    """获取所有任务状态"""
+    tasks = task_manager.get_all_tasks()
+    return jsonify({
+        'total': len(tasks),
+        'tasks': tasks
+    })
+
+
+@app.route('/api/gpu/resources')
+def get_gpu_resources():
+    """获取所有GPU节点的资源使用情况"""
+    resources = []
+    
+    # 获取所有Worker的状态
+    worker_status = task_manager.get_worker_status()
+    
+    for worker in GPU_WORKERS:
+        try:
+            # 获取Worker的GPU状态
+            url = f"http://{worker['host']}:{worker['port']}/gpu/status"
+            response = requests.get(url, timeout=2)
+            
+            if response.status_code == 200:
+                gpu_status = response.json()
+                
+                # 查找对应的worker状态
+                ws = next((w for w in worker_status if w['id'] == worker['id']), {})
+                
+                resources.append({
+                    'worker_id': worker['id'],
+                    'worker_name': worker['name'],
+                    'gpu_model': worker['gpu_model'],
+                    'gpu_memory_total': worker['gpu_memory'],
+                    'compute_capability': worker['compute_capability'],
+                    'status': ws.get('status', 'unknown'),
+                    'online': ws.get('online', False),
+                    'gpu_utilization': gpu_status.get('gpu_utilization', 0),
+                    'memory_utilization': gpu_status.get('memory_utilization', 0),
+                    'memory_used': gpu_status.get('memory_used', 0),
+                    'memory_free': gpu_status.get('memory_free', 0),
+                    'temperature': gpu_status.get('temperature', 0),
+                    'power_usage': gpu_status.get('power_usage', 0),
+                    'timestamp': gpu_status.get('timestamp', '')
+                })
+        except Exception as e:
+            # Worker不可访问，返回离线状态
+            ws = next((w for w in worker_status if w['id'] == worker['id']), {})
+            resources.append({
+                'worker_id': worker['id'],
+                'worker_name': worker['name'],
+                'gpu_model': worker['gpu_model'],
+                'gpu_memory_total': worker['gpu_memory'],
+                'compute_capability': worker['compute_capability'],
+                'status': 'offline',
+                'online': False,
+                'error': str(e)
+            })
+    
+    return jsonify({
+        'total_workers': len(resources),
+        'resources': resources
+    })
+
+
+@app.route('/api/workers')
+def get_workers():
+    """获取所有Worker节点信息"""
+    worker_status = task_manager.get_worker_status()
+    return jsonify({
+        'total': len(worker_status),
+        'workers': worker_status
+    })
+
+
+@app.route('/api/cluster/stats')
+def get_cluster_stats():
+    """获取集群统计信息"""
+    worker_status = task_manager.get_worker_status()
+    tasks = task_manager.get_all_tasks()
+    
+    # 统计任务状态
+    task_stats = {}
+    for task in tasks:
+        status = task['status']
+        task_stats[status] = task_stats.get(status, 0) + 1
+    
+    # 统计Worker状态
+    online_workers = sum(1 for w in worker_status if w['online'])
+    busy_workers = sum(1 for w in worker_status if w['status'] == 'busy')
+    
+    return jsonify({
+        'total_workers': len(worker_status),
+        'online_workers': online_workers,
+        'busy_workers': busy_workers,
+        'available_workers': online_workers - busy_workers,
+        'total_tasks': len(tasks),
+        'task_stats': task_stats,
+        'gpu_models': list(set(w['gpu_model'] for w in GPU_WORKERS))
+    })
+
+
 if __name__ == '__main__':
     # Load challenges on startup
     load_challenges()
     
+    # 初始化任务管理器和GPU监控器
+    print("初始化任务管理系统...")
+    task_manager = TaskManager(GPU_WORKERS)
+    task_manager.start_dispatcher()
+    
+    print("初始化GPU监控系统...")
+    gpu_monitor = GPUMonitor(simulation_mode=True)
+    gpu_monitor.start_monitoring(interval=2.0)
+    
     # Run the app
     print("\n" + "="*60)
-    print("🚀 LeetGPU Online Testing Website")
+    print("🚀 LeetGPU Online Testing Website - Master Node")
     print("="*60)
     print(f"📊 Loaded {len(challenges_data)} challenges")
-    print("🌐 Server starting at http://localhost:5000")
+    print(f"🖥️  Configured {len(GPU_WORKERS)} GPU Worker nodes")
+    print(f"🌐 Server starting at http://{MASTER_HOST}:{MASTER_PORT}")
+    print("="*60)
+    print("\nGPU Workers:")
+    for worker in GPU_WORKERS:
+        print(f"  - {worker['name']}: {worker['gpu_model']} @ {worker['host']}:{worker['port']}")
     print("="*60 + "\n")
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    try:
+        app.run(debug=True, host=MASTER_HOST, port=MASTER_PORT)
+    finally:
+        # 清理资源
+        print("\n关闭服务...")
+        task_manager.stop_dispatcher()
+        gpu_monitor.stop_monitoring()
+        print("服务已停止")

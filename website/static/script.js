@@ -3,13 +3,16 @@
 let allChallenges = [];
 let currentFilter = 'all';
 let currentGPU = null;
+let gpuMonitorInterval = null;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', async () => {
     await loadStats();
     await loadChallenges();
     await loadGPUModels();
+    await loadGPUResources();
     setupEventListeners();
+    startGPUMonitoring();
 });
 
 // Load statistics
@@ -199,3 +202,167 @@ function getDifficultyColor(difficulty) {
     };
     return colors[difficulty] || '#6366f1';
 }
+
+// ============= GPU资源监控功能 =============
+
+// 加载GPU资源信息
+async function loadGPUResources() {
+    try {
+        const response = await fetch('/api/gpu/resources');
+        const data = await response.json();
+        
+        displayGPUResources(data.resources);
+    } catch (error) {
+        console.error('Error loading GPU resources:', error);
+    }
+}
+
+// 显示GPU资源信息
+function displayGPUResources(resources) {
+    // 检查是否已存在GPU资源容器
+    let container = document.getElementById('gpu-resources-container');
+    
+    if (!container) {
+        // 创建容器并插入到stats-section之后
+        const statsSection = document.querySelector('.stats-section');
+        container = document.createElement('div');
+        container.id = 'gpu-resources-container';
+        container.className = 'gpu-resources-section';
+        statsSection.after(container);
+    }
+    
+    if (!resources || resources.length === 0) {
+        container.innerHTML = '<p class="loading">暂无可用的GPU资源</p>';
+        return;
+    }
+    
+    container.innerHTML = `
+        <h2 style="margin-bottom: 1.5rem; color: var(--primary-color);">
+            🖥️ GPU节点资源监控
+        </h2>
+        <div class="gpu-resources-grid">
+            ${resources.map(gpu => `
+                <div class="gpu-resource-card ${gpu.online ? 'online' : 'offline'}">
+                    <div class="gpu-header">
+                        <h3>${gpu.worker_name}</h3>
+                        <span class="status-badge ${gpu.online ? 'status-online' : 'status-offline'}">
+                            ${gpu.online ? '在线' : '离线'}
+                        </span>
+                    </div>
+                    
+                    <div class="gpu-model-info">
+                        <span class="gpu-icon">🎮</span>
+                        <div>
+                            <div class="model-name">${gpu.gpu_model}</div>
+                            <div class="model-specs">${gpu.gpu_memory_total} | CC ${gpu.compute_capability}</div>
+                        </div>
+                    </div>
+                    
+                    ${gpu.online ? `
+                        <div class="gpu-metrics">
+                            <div class="metric">
+                                <span class="metric-label">GPU利用率</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: ${gpu.gpu_utilization}%; background: linear-gradient(90deg, #6366f1, #8b5cf6);"></div>
+                                </div>
+                                <span class="metric-value">${gpu.gpu_utilization?.toFixed(1) || 0}%</span>
+                            </div>
+                            
+                            <div class="metric">
+                                <span class="metric-label">显存使用</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: ${gpu.memory_utilization}%; background: linear-gradient(90deg, #22c55e, #10b981);"></div>
+                                </div>
+                                <span class="metric-value">${gpu.memory_utilization?.toFixed(1) || 0}%</span>
+                            </div>
+                            
+                            <div class="gpu-stats">
+                                <div class="stat-item">
+                                    <span class="stat-icon">🌡️</span>
+                                    <span>${gpu.temperature || 0}°C</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">⚡</span>
+                                    <span>${gpu.power_usage?.toFixed(1) || 0}W</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">📊</span>
+                                    <span>${gpu.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="gpu-offline-message">
+                            <p>该GPU节点当前离线</p>
+                        </div>
+                    `}
+                    
+                    <div class="gpu-footer">
+                        <small>更新时间: ${gpu.timestamp ? new Date(gpu.timestamp).toLocaleTimeString('zh-CN') : 'N/A'}</small>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// 启动GPU监控（每5秒更新一次）
+function startGPUMonitoring() {
+    if (gpuMonitorInterval) {
+        clearInterval(gpuMonitorInterval);
+    }
+    
+    gpuMonitorInterval = setInterval(async () => {
+        await loadGPUResources();
+    }, 5000);
+}
+
+// 停止GPU监控
+function stopGPUMonitoring() {
+    if (gpuMonitorInterval) {
+        clearInterval(gpuMonitorInterval);
+        gpuMonitorInterval = null;
+    }
+}
+
+// 提交任务到GPU Worker
+async function submitTaskToGPU(code, inputs, gridSize, blockSize, gpuModel) {
+    try {
+        const response = await fetch('/api/submit-task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                code: code,
+                inputs: inputs,
+                grid_size: gridSize,
+                block_size: blockSize,
+                gpu_model: gpuModel
+            })
+        });
+        
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error submitting task:', error);
+        throw error;
+    }
+}
+
+// 查询任务状态
+async function getTaskStatus(taskId) {
+    try {
+        const response = await fetch(`/api/task/${taskId}`);
+        const status = await response.json();
+        return status;
+    } catch (error) {
+        console.error('Error getting task status:', error);
+        throw error;
+    }
+}
+
+// 在页面卸载时停止监控
+window.addEventListener('beforeunload', () => {
+    stopGPUMonitoring();
+});
