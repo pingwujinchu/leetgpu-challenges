@@ -46,6 +46,16 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
 
+# RocketMQ配置（用于任务队列）
+ROCKETMQ_NAMESERVER = 'localhost:9876'
+ROCKETMQ_GROUP_ID = 'leetgpu_group'
+ROCKETMQ_TASK_TOPIC = 'leetgpu_tasks'
+ROCKETMQ_RESULT_TOPIC = 'leetgpu_results'
+ROCKETMQ_HEARTBEAT_TOPIC = 'leetgpu_heartbeat'
+
+# 消息队列选择：'redis' 或 'rocketmq'
+MESSAGE_QUEUE_TYPE = 'rocketmq'
+
 # GPU监控配置
 GPU_MONITOR_INTERVAL = 2  # GPU监控间隔（秒）
 
