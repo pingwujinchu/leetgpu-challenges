@@ -35,7 +35,7 @@ class SubmitJobRequest(BaseModel):
     framework: Literal["cuda", "triton", "cute", "cutile"]
 
     # For routing
-    gpu_vendor: Literal["nvidia", "amd", "intel", "cpu", "any"] = "any"
+    gpu_vendor: Literal["nvidia", "amd", "intel", "apple", "cpu", "any"] = "any"
     gpu_arch: Optional[str] = Field(default=None, max_length=64)
 
     # User code to execute. The worker decides how to compile/run per framework.

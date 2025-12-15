@@ -16,7 +16,7 @@ class QueueNames:
 
     def for_vendor(self, vendor: str) -> str:
         v = (vendor or "any").strip().lower()
-        if v in {"nvidia", "amd", "intel", "cpu", "any"}:
+        if v in {"nvidia", "amd", "intel", "apple", "cpu", "any"}:
             return f"{self.prefix}:{v}"
         return f"{self.prefix}:any"
 

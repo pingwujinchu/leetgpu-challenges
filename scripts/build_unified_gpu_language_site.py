@@ -166,7 +166,7 @@ def build_index() -> Dict[str, Any]:
         "generated_from": "scripts/build_unified_gpu_language_site.py",
         "challenge_count": len(challenges),
         "frameworks_supported": [fw.id for fw in FRAMEWORKS],
-        "gpu_vendors_supported": ["nvidia", "amd", "intel"],
+        "gpu_vendors_supported": ["nvidia", "amd", "intel", "apple"],
         "challenges": challenges,
     }
 

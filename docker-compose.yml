@@ -92,3 +92,22 @@ services:
       - redis
       - mysql
 
+  worker-apple:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
+      REPO_ROOT: /repo
+      ARTIFACTS_DIR: /repo/artifacts
+      WORKER_VENDOR: apple
+      # In practice, Metal GPU access is host-specific; default to local executor on macOS nodes.
+      JOB_EXECUTOR: local
+    volumes:
+      - ./:/repo
+    working_dir: /repo
+    depends_on:
+      - redis
+      - mysql
+

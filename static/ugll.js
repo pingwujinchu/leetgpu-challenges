@@ -55,13 +55,22 @@ function updateHash({ key, fw, gpu }) {
 }
 
 function gpuLabel(v) {
-  return v === "nvidia" ? "NVIDIA" : v === "amd" ? "AMD" : v === "intel" ? "Intel" : "Any";
+  return v === "nvidia"
+    ? "NVIDIA"
+    : v === "amd"
+      ? "AMD"
+      : v === "intel"
+        ? "Intel"
+        : v === "apple"
+          ? "Apple (Metal)"
+          : "Any";
 }
 
 function vendorPill(v) {
   if (v === "nvidia") return badge("NVIDIA", "pill--ok");
   if (v === "amd") return badge("AMD", "pill--accent");
   if (v === "intel") return badge("Intel", "pill--warn");
+  if (v === "apple") return badge("Apple (Metal)", "pill--ok");
   return badge(v, "pill");
 }
 
