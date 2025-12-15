@@ -4,13 +4,21 @@ services:
     ports:
       - "6379:6379"
 
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: leetgpu
+    ports:
+      - "3306:3306"
+
   api:
     build:
       context: .
       dockerfile: services/api/Dockerfile
     environment:
       REDIS_URL: redis://redis:6379/0
-      DATABASE_URL: sqlite:////repo/artifacts/app.db
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
       JWT_SECRET: dev-secret-change-me
@@ -21,6 +29,7 @@ services:
       - "8000:8000"
     depends_on:
       - redis
+      - mysql
 
   worker-any:
     build:
@@ -28,7 +37,7 @@ services:
       dockerfile: services/worker/Dockerfile
     environment:
       REDIS_URL: redis://redis:6379/0
-      DATABASE_URL: sqlite:////repo/artifacts/app.db
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
       WORKER_VENDOR: any
@@ -43,6 +52,7 @@ services:
     working_dir: /repo
     depends_on:
       - redis
+      - mysql
 
   worker-nvidia:
     build:
@@ -50,7 +60,7 @@ services:
       dockerfile: services/worker/Dockerfile
     environment:
       REDIS_URL: redis://redis:6379/0
-      DATABASE_URL: sqlite:////repo/artifacts/app.db
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
       WORKER_VENDOR: nvidia
@@ -61,6 +71,7 @@ services:
     working_dir: /repo
     depends_on:
       - redis
+      - mysql
 
   worker-amd:
     build:
@@ -68,7 +79,7 @@ services:
       dockerfile: services/worker/Dockerfile
     environment:
       REDIS_URL: redis://redis:6379/0
-      DATABASE_URL: sqlite:////repo/artifacts/app.db
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
       WORKER_VENDOR: amd
@@ -79,4 +90,5 @@ services:
     working_dir: /repo
     depends_on:
       - redis
+      - mysql
 

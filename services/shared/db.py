@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text, create_engine, func
+from sqlalchemy.dialects.mysql import MEDIUMTEXT
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
 
 
@@ -51,8 +52,12 @@ class Job(Base):
     gpu_vendor: Mapped[str] = mapped_column(String(32), index=True)  # nvidia|amd|intel|cpu|any
     gpu_arch: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)  # e.g. sm80, gfx90a
 
-    # Artifacts
-    source_path: Mapped[str] = mapped_column(String(512))  # repo-relative file path under artifacts/
+    # Code & artifacts
+    # Store user-submitted code in DB (MySQL) as the source of truth.
+    # (MEDIUMTEXT fits up to 16MB; request limit is 2MB.)
+    source_code: Mapped[Optional[str]] = mapped_column(MEDIUMTEXT, nullable=True)
+    # Optional: path to a local artifact copy (not required for distributed workers).
+    source_path: Mapped[Optional[str]] = mapped_column(String(512), nullable=True)
 
     # Execution result
     status: Mapped[JobStatus] = mapped_column(Enum(JobStatus), default=JobStatus.queued, index=True)

@@ -162,21 +162,22 @@ def submit_job(
         framework=req.framework,
         gpu_vendor=req.gpu_vendor,
         gpu_arch=req.gpu_arch,
-        source_path="",  # set after we create artifacts
+        source_code=req.source_code,
+        source_path=None,
         status=JobStatus.queued,
     )
     db.add(job)
     db.commit()
     db.refresh(job)
 
-    # Store source as an artifact file (not in DB) to avoid DB bloat.
-    src_path = _artifact_path_for_job(job.id, req.framework)
-    src_path.parent.mkdir(parents=True, exist_ok=True)
-    src_path.write_text(req.source_code, encoding="utf-8")
-
-    job.source_path = str(src_path.relative_to(settings.repo_root)).replace(os.sep, "/")
-    db.add(job)
-    db.commit()
+    # Optional: keep a local artifact copy for debugging (not required for worker execution).
+    if os.environ.get("STORE_SOURCE_ARTIFACT", "").strip().lower() in {"1", "true", "yes"}:
+        src_path = _artifact_path_for_job(job.id, req.framework)
+        src_path.parent.mkdir(parents=True, exist_ok=True)
+        src_path.write_text(req.source_code, encoding="utf-8")
+        job.source_path = str(src_path.relative_to(settings.repo_root)).replace(os.sep, "/")
+        db.add(job)
+        db.commit()
 
     # Enqueue by vendor queue name.
     qnames = QueueNames()

@@ -23,6 +23,10 @@ def _init_db() -> None:
 def _work_dir(job_id: int) -> Path:
     return settings.artifacts_dir / "jobs" / str(job_id) / "work"
 
+def _source_file_path(job_id: int, framework: str) -> Path:
+    ext = "cu" if framework == "cuda" else "py"
+    return settings.artifacts_dir / "jobs" / str(job_id) / f"solution.{ext}"
+
 
 def run_job(job_id: int) -> None:
     """
@@ -47,10 +51,9 @@ def run_job(job_id: int) -> None:
         db.add(job)
         db.commit()
 
-        src_path = (settings.repo_root / Path(job.source_path)).resolve()
-        if not src_path.is_file():
+        if not job.source_code:
             job.status = JobStatus.failed
-            job.error = f"Missing source artifact: {job.source_path}"
+            job.error = "Missing source_code in DB"
             job.finished_at = datetime.now(timezone.utc)
             db.add(job)
             db.commit()
@@ -59,6 +62,11 @@ def run_job(job_id: int) -> None:
         executor = (os.environ.get("JOB_EXECUTOR", "docker").strip().lower())
         wdir = _work_dir(job.id)
         wdir.mkdir(parents=True, exist_ok=True)
+
+        # Materialize code into a local file for compilation/execution.
+        src_path = _source_file_path(job.id, job.framework)
+        src_path.parent.mkdir(parents=True, exist_ok=True)
+        src_path.write_text(job.source_code, encoding="utf-8")
 
         if executor == "docker":
             res = docker_compile_only(
