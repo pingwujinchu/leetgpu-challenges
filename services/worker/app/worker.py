@@ -4,7 +4,7 @@ import os
 import sys
 
 from redis import Redis
-from rq import Connection, Worker
+from rq import Worker
 
 from services.shared.queueing import QueueNames
 from services.shared.settings import load_settings
@@ -34,9 +34,10 @@ def main() -> None:
         print("No queues configured. Set WORKER_VENDOR or WORKER_QUEUES.", file=sys.stderr)
         sys.exit(2)
 
-    with Connection(redis):
-        w = Worker(queues)
-        w.work(with_scheduler=False)
+    # RQ v2.x no longer exposes Connection in rq.__init__.
+    # Passing the connection explicitly keeps us compatible across versions.
+    w = Worker(queues, connection=redis)
+    w.work(with_scheduler=False)
 
 
 if __name__ == "__main__":
