@@ -1,8 +1,15 @@
+name: leetgpu
+
 services:
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
 
   mysql:
     image: mysql:8.4
@@ -11,6 +18,12 @@ services:
       MYSQL_DATABASE: leetgpu
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -prootpass --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
 
   api:
     build:
@@ -29,8 +42,10 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - redis
-      - mysql
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
 
   worker-any:
     build:
@@ -53,8 +68,10 @@ services:
       # - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /repo
     depends_on:
-      - redis
-      - mysql
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
 
   worker-nvidia:
     build:
@@ -73,8 +90,10 @@ services:
       - ./:/repo
     working_dir: /repo
     depends_on:
-      - redis
-      - mysql
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
 
   worker-amd:
     build:
@@ -93,8 +112,10 @@ services:
       - ./:/repo
     working_dir: /repo
     depends_on:
-      - redis
-      - mysql
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
 
   worker-apple:
     build:
@@ -113,6 +134,8 @@ services:
       - ./:/repo
     working_dir: /repo
     depends_on:
-      - redis
-      - mysql
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
 
