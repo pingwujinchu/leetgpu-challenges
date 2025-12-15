@@ -1,0 +1,3495 @@
+{
+  "schema_version": 1,
+  "generated_from": "scripts/build_unified_gpu_language_site.py",
+  "challenge_count": 58,
+  "frameworks_supported": [
+    "cuda",
+    "triton",
+    "cute",
+    "cutile"
+  ],
+  "gpu_vendors_supported": [
+    "nvidia",
+    "amd",
+    "intel"
+  ],
+  "challenges": [
+    {
+      "id": 1,
+      "difficulty": "easy",
+      "slug": "1_vector_add",
+      "title": "Vector Addition",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/1_vector_add",
+        "challenge_html": "challenges/easy/1_vector_add/challenge.html",
+        "challenge_py": "challenges/easy/1_vector_add/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/1_vector_add/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/1_vector_add/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/1_vector_add/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/1_vector_add/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 2,
+      "difficulty": "easy",
+      "slug": "2_matrix_multiplication",
+      "title": "Matrix Multiplication",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/2_matrix_multiplication",
+        "challenge_html": "challenges/easy/2_matrix_multiplication/challenge.html",
+        "challenge_py": "challenges/easy/2_matrix_multiplication/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/2_matrix_multiplication/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/2_matrix_multiplication/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/2_matrix_multiplication/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/2_matrix_multiplication/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 3,
+      "difficulty": "easy",
+      "slug": "3_matrix_transpose",
+      "title": "Matrix Transpose",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/3_matrix_transpose",
+        "challenge_html": "challenges/easy/3_matrix_transpose/challenge.html",
+        "challenge_py": "challenges/easy/3_matrix_transpose/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/3_matrix_transpose/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/3_matrix_transpose/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/3_matrix_transpose/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/3_matrix_transpose/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 4,
+      "difficulty": "medium",
+      "slug": "4_reduction",
+      "title": "Reduction",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/4_reduction",
+        "challenge_html": "challenges/medium/4_reduction/challenge.html",
+        "challenge_py": "challenges/medium/4_reduction/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/4_reduction/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/4_reduction/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/4_reduction/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/4_reduction/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 5,
+      "difficulty": "medium",
+      "slug": "5_softmax",
+      "title": "Softmax",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/5_softmax",
+        "challenge_html": "challenges/medium/5_softmax/challenge.html",
+        "challenge_py": "challenges/medium/5_softmax/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/5_softmax/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/5_softmax/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/5_softmax/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/5_softmax/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 6,
+      "difficulty": "medium",
+      "slug": "6_softmax_attention",
+      "title": "Softmax Attention",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/6_softmax_attention",
+        "challenge_html": "challenges/medium/6_softmax_attention/challenge.html",
+        "challenge_py": "challenges/medium/6_softmax_attention/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/6_softmax_attention/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/6_softmax_attention/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/6_softmax_attention/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/6_softmax_attention/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 7,
+      "difficulty": "easy",
+      "slug": "7_color_inversion",
+      "title": "Color Inversion",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/7_color_inversion",
+        "challenge_html": "challenges/easy/7_color_inversion/challenge.html",
+        "challenge_py": "challenges/easy/7_color_inversion/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/7_color_inversion/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/7_color_inversion/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/7_color_inversion/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/7_color_inversion/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 8,
+      "difficulty": "easy",
+      "slug": "8_matrix_addition",
+      "title": "Matrix Addition",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/8_matrix_addition",
+        "challenge_html": "challenges/easy/8_matrix_addition/challenge.html",
+        "challenge_py": "challenges/easy/8_matrix_addition/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/8_matrix_addition/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/8_matrix_addition/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/8_matrix_addition/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/8_matrix_addition/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 9,
+      "difficulty": "easy",
+      "slug": "9_1d_convolution",
+      "title": "1D Convolution",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/9_1d_convolution",
+        "challenge_html": "challenges/easy/9_1d_convolution/challenge.html",
+        "challenge_py": "challenges/easy/9_1d_convolution/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/9_1d_convolution/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/9_1d_convolution/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/9_1d_convolution/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/9_1d_convolution/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 10,
+      "difficulty": "medium",
+      "slug": "10_2d_convolution",
+      "title": "2D Convolution",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/10_2d_convolution",
+        "challenge_html": "challenges/medium/10_2d_convolution/challenge.html",
+        "challenge_py": "challenges/medium/10_2d_convolution/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/10_2d_convolution/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/10_2d_convolution/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/10_2d_convolution/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/10_2d_convolution/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 11,
+      "difficulty": "hard",
+      "slug": "11_3d_convolution",
+      "title": "3D Convolution",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/11_3d_convolution",
+        "challenge_html": "challenges/hard/11_3d_convolution/challenge.html",
+        "challenge_py": "challenges/hard/11_3d_convolution/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/11_3d_convolution/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/11_3d_convolution/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/11_3d_convolution/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/11_3d_convolution/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 12,
+      "difficulty": "hard",
+      "slug": "12_multi_head_attention",
+      "title": "Multi-Head Attention",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/12_multi_head_attention",
+        "challenge_html": "challenges/hard/12_multi_head_attention/challenge.html",
+        "challenge_py": "challenges/hard/12_multi_head_attention/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/12_multi_head_attention/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/12_multi_head_attention/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/12_multi_head_attention/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/12_multi_head_attention/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 13,
+      "difficulty": "medium",
+      "slug": "13_histogramming",
+      "title": "Histogramming",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/13_histogramming",
+        "challenge_html": "challenges/medium/13_histogramming/challenge.html",
+        "challenge_py": "challenges/medium/13_histogramming/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/13_histogramming/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/13_histogramming/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/13_histogramming/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/13_histogramming/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 14,
+      "difficulty": "hard",
+      "slug": "14_multi_agent_sim",
+      "title": "Multi-Agent Simulation",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/14_multi_agent_sim",
+        "challenge_html": "challenges/hard/14_multi_agent_sim/challenge.html",
+        "challenge_py": "challenges/hard/14_multi_agent_sim/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/14_multi_agent_sim/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/14_multi_agent_sim/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/14_multi_agent_sim/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/14_multi_agent_sim/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 15,
+      "difficulty": "medium",
+      "slug": "15_sorting",
+      "title": "Sorting",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/15_sorting",
+        "challenge_html": "challenges/medium/15_sorting/challenge.html",
+        "challenge_py": "challenges/medium/15_sorting/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/15_sorting/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/15_sorting/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/15_sorting/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/15_sorting/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 16,
+      "difficulty": "medium",
+      "slug": "16_prefix_sum",
+      "title": "Prefix Sum",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/16_prefix_sum",
+        "challenge_html": "challenges/medium/16_prefix_sum/challenge.html",
+        "challenge_py": "challenges/medium/16_prefix_sum/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/16_prefix_sum/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/16_prefix_sum/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/16_prefix_sum/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/16_prefix_sum/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 17,
+      "difficulty": "medium",
+      "slug": "17_dot_product",
+      "title": "Dot Product",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/17_dot_product",
+        "challenge_html": "challenges/medium/17_dot_product/challenge.html",
+        "challenge_py": "challenges/medium/17_dot_product/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/17_dot_product/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/17_dot_product/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/17_dot_product/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/17_dot_product/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 18,
+      "difficulty": "medium",
+      "slug": "18_sparse_matrix_vector_multiplication",
+      "title": "Sparse Matrix-Vector Multiplication",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/18_sparse_matrix_vector_multiplication",
+        "challenge_html": "challenges/medium/18_sparse_matrix_vector_multiplication/challenge.html",
+        "challenge_py": "challenges/medium/18_sparse_matrix_vector_multiplication/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/18_sparse_matrix_vector_multiplication/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/18_sparse_matrix_vector_multiplication/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/18_sparse_matrix_vector_multiplication/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/18_sparse_matrix_vector_multiplication/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 19,
+      "difficulty": "easy",
+      "slug": "19_reverse_array",
+      "title": "Reverse Array",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/19_reverse_array",
+        "challenge_html": "challenges/easy/19_reverse_array/challenge.html",
+        "challenge_py": "challenges/easy/19_reverse_array/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/19_reverse_array/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/19_reverse_array/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/19_reverse_array/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/19_reverse_array/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 20,
+      "difficulty": "hard",
+      "slug": "20_kmeans_clustering",
+      "title": "K-Means Clustering",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/20_kmeans_clustering",
+        "challenge_html": "challenges/hard/20_kmeans_clustering/challenge.html",
+        "challenge_py": "challenges/hard/20_kmeans_clustering/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/20_kmeans_clustering/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/20_kmeans_clustering/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/20_kmeans_clustering/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/20_kmeans_clustering/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 21,
+      "difficulty": "easy",
+      "slug": "21_relu",
+      "title": "ReLU",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/21_relu",
+        "challenge_html": "challenges/easy/21_relu/challenge.html",
+        "challenge_py": "challenges/easy/21_relu/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/21_relu/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/21_relu/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/21_relu/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/21_relu/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 22,
+      "difficulty": "medium",
+      "slug": "22_gemm",
+      "title": "General Matrix Multiplication (GEMM)",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/22_gemm",
+        "challenge_html": "challenges/medium/22_gemm/challenge.html",
+        "challenge_py": "challenges/medium/22_gemm/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/22_gemm/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/22_gemm/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/22_gemm/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/22_gemm/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 23,
+      "difficulty": "easy",
+      "slug": "23_leaky_relu",
+      "title": "Leaky ReLU",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/23_leaky_relu",
+        "challenge_html": "challenges/easy/23_leaky_relu/challenge.html",
+        "challenge_py": "challenges/easy/23_leaky_relu/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/23_leaky_relu/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/23_leaky_relu/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/23_leaky_relu/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/23_leaky_relu/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 24,
+      "difficulty": "easy",
+      "slug": "24_rainbow_table",
+      "title": "Rainbow Table",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/24_rainbow_table",
+        "challenge_html": "challenges/easy/24_rainbow_table/challenge.html",
+        "challenge_py": "challenges/easy/24_rainbow_table/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/24_rainbow_table/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/24_rainbow_table/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/24_rainbow_table/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/24_rainbow_table/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 25,
+      "difficulty": "medium",
+      "slug": "25_categorical_cross_entropy_loss",
+      "title": "Categorical Cross Entropy Loss",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/25_categorical_cross_entropy_loss",
+        "challenge_html": "challenges/medium/25_categorical_cross_entropy_loss/challenge.html",
+        "challenge_py": "challenges/medium/25_categorical_cross_entropy_loss/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/25_categorical_cross_entropy_loss/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/25_categorical_cross_entropy_loss/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/25_categorical_cross_entropy_loss/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/25_categorical_cross_entropy_loss/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 27,
+      "difficulty": "medium",
+      "slug": "27_mean_squared_error",
+      "title": "Mean Squared Error",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/27_mean_squared_error",
+        "challenge_html": "challenges/medium/27_mean_squared_error/challenge.html",
+        "challenge_py": "challenges/medium/27_mean_squared_error/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/27_mean_squared_error/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/27_mean_squared_error/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/27_mean_squared_error/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/27_mean_squared_error/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 28,
+      "difficulty": "medium",
+      "slug": "28_gaussian_blur",
+      "title": "Gaussian Blur",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/28_gaussian_blur",
+        "challenge_html": "challenges/medium/28_gaussian_blur/challenge.html",
+        "challenge_py": "challenges/medium/28_gaussian_blur/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/28_gaussian_blur/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/28_gaussian_blur/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/28_gaussian_blur/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/28_gaussian_blur/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 29,
+      "difficulty": "medium",
+      "slug": "29_top_k_selection",
+      "title": "Top K Selection",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/29_top_k_selection",
+        "challenge_html": "challenges/medium/29_top_k_selection/challenge.html",
+        "challenge_py": "challenges/medium/29_top_k_selection/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/29_top_k_selection/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/29_top_k_selection/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/29_top_k_selection/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/29_top_k_selection/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 30,
+      "difficulty": "medium",
+      "slug": "30_batched_matrix_multiplication",
+      "title": "Batched Matrix Multiplication",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/30_batched_matrix_multiplication",
+        "challenge_html": "challenges/medium/30_batched_matrix_multiplication/challenge.html",
+        "challenge_py": "challenges/medium/30_batched_matrix_multiplication/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/30_batched_matrix_multiplication/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/30_batched_matrix_multiplication/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/30_batched_matrix_multiplication/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/30_batched_matrix_multiplication/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 31,
+      "difficulty": "easy",
+      "slug": "31_matrix_copy",
+      "title": "Matrix Copy",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/31_matrix_copy",
+        "challenge_html": "challenges/easy/31_matrix_copy/challenge.html",
+        "challenge_py": "challenges/easy/31_matrix_copy/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/31_matrix_copy/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/31_matrix_copy/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/31_matrix_copy/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/31_matrix_copy/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 32,
+      "difficulty": "medium",
+      "slug": "32_int8_quantized_matmul",
+      "title": "INT8 Quantized MatMul",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/32_int8_quantized_matmul",
+        "challenge_html": "challenges/medium/32_int8_quantized_matmul/challenge.html",
+        "challenge_py": "challenges/medium/32_int8_quantized_matmul/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/32_int8_quantized_matmul/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/32_int8_quantized_matmul/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/32_int8_quantized_matmul/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/32_int8_quantized_matmul/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 33,
+      "difficulty": "medium",
+      "slug": "33_ordinary_least_squares",
+      "title": "Ordinary Least Squares",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/33_ordinary_least_squares",
+        "challenge_html": "challenges/medium/33_ordinary_least_squares/challenge.html",
+        "challenge_py": "challenges/medium/33_ordinary_least_squares/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/33_ordinary_least_squares/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/33_ordinary_least_squares/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/33_ordinary_least_squares/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/33_ordinary_least_squares/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 34,
+      "difficulty": "medium",
+      "slug": "34_logistic_regression",
+      "title": "Logistic Regression",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/34_logistic_regression",
+        "challenge_html": "challenges/medium/34_logistic_regression/challenge.html",
+        "challenge_py": "challenges/medium/34_logistic_regression/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/34_logistic_regression/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/34_logistic_regression/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/34_logistic_regression/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/34_logistic_regression/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 35,
+      "difficulty": "medium",
+      "slug": "35_monte_carlo_integration",
+      "title": "Monte Carlo Integration",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/35_monte_carlo_integration",
+        "challenge_html": "challenges/medium/35_monte_carlo_integration/challenge.html",
+        "challenge_py": "challenges/medium/35_monte_carlo_integration/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/35_monte_carlo_integration/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/35_monte_carlo_integration/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/35_monte_carlo_integration/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/35_monte_carlo_integration/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 36,
+      "difficulty": "medium",
+      "slug": "36_radix_sort",
+      "title": "Radix Sort",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/36_radix_sort",
+        "challenge_html": "challenges/medium/36_radix_sort/challenge.html",
+        "challenge_py": "challenges/medium/36_radix_sort/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/36_radix_sort/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/36_radix_sort/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/36_radix_sort/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/36_radix_sort/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 37,
+      "difficulty": "medium",
+      "slug": "37_matrix_power",
+      "title": "Matrix Power",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/37_matrix_power",
+        "challenge_html": "challenges/medium/37_matrix_power/challenge.html",
+        "challenge_py": "challenges/medium/37_matrix_power/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/37_matrix_power/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/37_matrix_power/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/37_matrix_power/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/37_matrix_power/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 38,
+      "difficulty": "medium",
+      "slug": "38_nearest_neighbor",
+      "title": "Nearest Neighbor",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/38_nearest_neighbor",
+        "challenge_html": "challenges/medium/38_nearest_neighbor/challenge.html",
+        "challenge_py": "challenges/medium/38_nearest_neighbor/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/38_nearest_neighbor/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/38_nearest_neighbor/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/38_nearest_neighbor/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/38_nearest_neighbor/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 39,
+      "difficulty": "hard",
+      "slug": "39_Fast_Fourier_transform",
+      "title": "Fast Fourier Transform",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/39_Fast_Fourier_transform",
+        "challenge_html": "challenges/hard/39_Fast_Fourier_transform/challenge.html",
+        "challenge_py": "challenges/hard/39_Fast_Fourier_transform/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/39_Fast_Fourier_transform/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/39_Fast_Fourier_transform/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/39_Fast_Fourier_transform/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/39_Fast_Fourier_transform/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 40,
+      "difficulty": "medium",
+      "slug": "40_batch_normalization",
+      "title": "Batch Normalization",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/40_batch_normalization",
+        "challenge_html": "challenges/medium/40_batch_normalization/challenge.html",
+        "challenge_py": "challenges/medium/40_batch_normalization/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/40_batch_normalization/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/40_batch_normalization/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/40_batch_normalization/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/40_batch_normalization/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 41,
+      "difficulty": "easy",
+      "slug": "41_simple_inference",
+      "title": "Simple Inference",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/41_simple_inference",
+        "challenge_html": "challenges/easy/41_simple_inference/challenge.html",
+        "challenge_py": "challenges/easy/41_simple_inference/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/41_simple_inference/starter/starter.cu",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/41_simple_inference/starter/starter.triton.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/41_simple_inference/starter/starter.cute.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/41_simple_inference/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": []
+    },
+    {
+      "id": 42,
+      "difficulty": "medium",
+      "slug": "42_2d_max_pooling",
+      "title": "2D Max Pooling",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/42_2d_max_pooling",
+        "challenge_html": "challenges/medium/42_2d_max_pooling/challenge.html",
+        "challenge_py": "challenges/medium/42_2d_max_pooling/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/42_2d_max_pooling/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/42_2d_max_pooling/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/42_2d_max_pooling/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/42_2d_max_pooling/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 43,
+      "difficulty": "easy",
+      "slug": "43_count_array_element",
+      "title": "Count Array Element",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/43_count_array_element",
+        "challenge_html": "challenges/easy/43_count_array_element/challenge.html",
+        "challenge_py": "challenges/easy/43_count_array_element/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/43_count_array_element/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/43_count_array_element/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/43_count_array_element/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/43_count_array_element/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 44,
+      "difficulty": "easy",
+      "slug": "44_count_2d_array_element",
+      "title": "Count 2D Array Element",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/44_count_2d_array_element",
+        "challenge_html": "challenges/easy/44_count_2d_array_element/challenge.html",
+        "challenge_py": "challenges/easy/44_count_2d_array_element/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/44_count_2d_array_element/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/44_count_2d_array_element/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/44_count_2d_array_element/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/44_count_2d_array_element/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 45,
+      "difficulty": "medium",
+      "slug": "45_count_3d_array_element",
+      "title": "Count 3D Array Element",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/45_count_3d_array_element",
+        "challenge_html": "challenges/medium/45_count_3d_array_element/challenge.html",
+        "challenge_py": "challenges/medium/45_count_3d_array_element/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/45_count_3d_array_element/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/45_count_3d_array_element/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/45_count_3d_array_element/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/45_count_3d_array_element/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 46,
+      "difficulty": "medium",
+      "slug": "46_bfs_shortest_path",
+      "title": "BFS Shortest Path",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/46_bfs_shortest_path",
+        "challenge_html": "challenges/medium/46_bfs_shortest_path/challenge.html",
+        "challenge_py": "challenges/medium/46_bfs_shortest_path/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/46_bfs_shortest_path/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/46_bfs_shortest_path/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/46_bfs_shortest_path/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/46_bfs_shortest_path/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 47,
+      "difficulty": "medium",
+      "slug": "47_subarray_sum",
+      "title": "Subarray Sum",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/47_subarray_sum",
+        "challenge_html": "challenges/medium/47_subarray_sum/challenge.html",
+        "challenge_py": "challenges/medium/47_subarray_sum/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/47_subarray_sum/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/47_subarray_sum/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/47_subarray_sum/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/47_subarray_sum/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 48,
+      "difficulty": "medium",
+      "slug": "48_2d_subarray_sum",
+      "title": "2D Subarray Sum",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/48_2d_subarray_sum",
+        "challenge_html": "challenges/medium/48_2d_subarray_sum/challenge.html",
+        "challenge_py": "challenges/medium/48_2d_subarray_sum/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/48_2d_subarray_sum/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/48_2d_subarray_sum/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/48_2d_subarray_sum/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/48_2d_subarray_sum/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 49,
+      "difficulty": "medium",
+      "slug": "49_3d_subarray_sum",
+      "title": "3D Subarray Sum",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/49_3d_subarray_sum",
+        "challenge_html": "challenges/medium/49_3d_subarray_sum/challenge.html",
+        "challenge_py": "challenges/medium/49_3d_subarray_sum/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/49_3d_subarray_sum/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/49_3d_subarray_sum/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/49_3d_subarray_sum/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/49_3d_subarray_sum/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 50,
+      "difficulty": "medium",
+      "slug": "50_rms_normalization",
+      "title": "RMS Normalization",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/50_rms_normalization",
+        "challenge_html": "challenges/medium/50_rms_normalization/challenge.html",
+        "challenge_py": "challenges/medium/50_rms_normalization/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/50_rms_normalization/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/50_rms_normalization/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/50_rms_normalization/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/50_rms_normalization/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 51,
+      "difficulty": "medium",
+      "slug": "51_max_subarray_sum",
+      "title": "Max Subarray Sum",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/51_max_subarray_sum",
+        "challenge_html": "challenges/medium/51_max_subarray_sum/challenge.html",
+        "challenge_py": "challenges/medium/51_max_subarray_sum/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/51_max_subarray_sum/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/51_max_subarray_sum/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/51_max_subarray_sum/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/51_max_subarray_sum/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 52,
+      "difficulty": "easy",
+      "slug": "52_silu",
+      "title": "Sigmoid Linear Unit",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/52_silu",
+        "challenge_html": "challenges/easy/52_silu/challenge.html",
+        "challenge_py": "challenges/easy/52_silu/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/52_silu/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/52_silu/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/52_silu/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/52_silu/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 53,
+      "difficulty": "hard",
+      "slug": "53_casual_attention",
+      "title": "Causal Self-Attention",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/53_casual_attention",
+        "challenge_html": "challenges/hard/53_casual_attention/challenge.html",
+        "challenge_py": "challenges/hard/53_casual_attention/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/53_casual_attention/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/53_casual_attention/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/53_casual_attention/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/53_casual_attention/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 54,
+      "difficulty": "easy",
+      "slug": "54_swiglu",
+      "title": "Swish-Gated Linear Unit",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/easy/54_swiglu",
+        "challenge_html": "challenges/easy/54_swiglu/challenge.html",
+        "challenge_py": "challenges/easy/54_swiglu/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/easy/54_swiglu/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/easy/54_swiglu/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/easy/54_swiglu/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/easy/54_swiglu/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 55,
+      "difficulty": "medium",
+      "slug": "55_attn_w_linear_bias",
+      "title": "Attention with Linear Biases",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/55_attn_w_linear_bias",
+        "challenge_html": "challenges/medium/55_attn_w_linear_bias/challenge.html",
+        "challenge_py": "challenges/medium/55_attn_w_linear_bias/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/55_attn_w_linear_bias/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/55_attn_w_linear_bias/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/55_attn_w_linear_bias/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/55_attn_w_linear_bias/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 56,
+      "difficulty": "hard",
+      "slug": "56_linear_attention",
+      "title": "Linear Self-Attention",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/56_linear_attention",
+        "challenge_html": "challenges/hard/56_linear_attention/challenge.html",
+        "challenge_py": "challenges/hard/56_linear_attention/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/56_linear_attention/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/56_linear_attention/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/56_linear_attention/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/56_linear_attention/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 57,
+      "difficulty": "medium",
+      "slug": "57_fp16_batched_matmul",
+      "title": "FP16 Batched Matrix Multiplication",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/57_fp16_batched_matmul",
+        "challenge_html": "challenges/medium/57_fp16_batched_matmul/challenge.html",
+        "challenge_py": "challenges/medium/57_fp16_batched_matmul/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/57_fp16_batched_matmul/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/57_fp16_batched_matmul/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/57_fp16_batched_matmul/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/57_fp16_batched_matmul/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 58,
+      "difficulty": "medium",
+      "slug": "58_fp16_dot_product",
+      "title": "FP16 Dot Product",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/medium/58_fp16_dot_product",
+        "challenge_html": "challenges/medium/58_fp16_dot_product/challenge.html",
+        "challenge_py": "challenges/medium/58_fp16_dot_product/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/medium/58_fp16_dot_product/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/medium/58_fp16_dot_product/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/medium/58_fp16_dot_product/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/medium/58_fp16_dot_product/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    },
+    {
+      "id": 59,
+      "difficulty": "hard",
+      "slug": "59_sliding_window_attn",
+      "title": "Sliding Window Self-Attention",
+      "num_gpus": 1,
+      "access_tier": "free",
+      "paths": {
+        "base": "challenges/hard/59_sliding_window_attn",
+        "challenge_html": "challenges/hard/59_sliding_window_attn/challenge.html",
+        "challenge_py": "challenges/hard/59_sliding_window_attn/challenge.py"
+      },
+      "frameworks": [
+        {
+          "id": "cuda",
+          "label": "CUDA",
+          "kind": "cuda",
+          "path": "challenges/hard/59_sliding_window_attn/starter/starter.cu",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "triton",
+          "label": "Triton",
+          "kind": "python",
+          "path": "challenges/hard/59_sliding_window_attn/starter/starter.triton.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia",
+            "amd"
+          ]
+        },
+        {
+          "id": "cute",
+          "label": "CUTE DSL",
+          "kind": "python",
+          "path": "challenges/hard/59_sliding_window_attn/starter/starter.cute.py",
+          "exists": true,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        },
+        {
+          "id": "cutile",
+          "label": "CuTile-Python",
+          "kind": "python",
+          "path": "challenges/hard/59_sliding_window_attn/starter/starter.cutile.py",
+          "exists": false,
+          "gpu_vendors": [
+            "nvidia"
+          ]
+        }
+      ],
+      "gpu_vendors": [
+        "amd",
+        "nvidia"
+      ]
+    }
+  ]
+}

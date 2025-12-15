@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Unified GPU Language (CUDA / Triton / CUTE / CuTile-Python)</title>
+    <meta
+      name="description"
+      content="统一入口：在不同 GPU（NVIDIA/AMD/Intel）视角下浏览同一题目的 CUDA/Triton/CUTE/CuTile-Python starter，实现统一导航与代码切换。"
+    />
+    <link rel="stylesheet" href="static/ugll.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__title">
+        <div class="brand">Unified GPU Language</div>
+        <div class="subtitle">CUDA · Triton · CUTE DSL · CuTile-Python</div>
+      </div>
+      <div class="topbar__controls">
+        <label class="control">
+          <span class="control__label">GPU</span>
+          <select id="gpuSelect" class="control__input">
+            <option value="any" selected>Any</option>
+            <option value="nvidia">NVIDIA</option>
+            <option value="amd">AMD</option>
+            <option value="intel">Intel</option>
+          </select>
+        </label>
+        <label class="control search">
+          <span class="control__label">搜索</span>
+          <input id="searchInput" class="control__input" placeholder="例如: gemm / softmax / 22" />
+        </label>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <section class="panel">
+          <div class="panel__title">筛选</div>
+          <div class="filters">
+            <div class="filterRow">
+              <div class="filterLabel">难度</div>
+              <div class="chips">
+                <label class="chip"><input type="checkbox" id="diffEasy" checked />easy</label>
+                <label class="chip"><input type="checkbox" id="diffMedium" checked />medium</label>
+                <label class="chip"><input type="checkbox" id="diffHard" checked />hard</label>
+              </div>
+            </div>
+
+            <div class="filterRow">
+              <div class="filterLabel">语言 / 框架</div>
+              <div class="chips">
+                <label class="chip"><input type="checkbox" id="fwCuda" checked />CUDA</label>
+                <label class="chip"><input type="checkbox" id="fwTriton" checked />Triton</label>
+                <label class="chip"><input type="checkbox" id="fwCute" checked />CUTE</label>
+                <label class="chip"><input type="checkbox" id="fwCutile" checked />CuTile</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__title">题目</div>
+          <div id="listMeta" class="meta">加载中…</div>
+          <div id="challengeList" class="list"></div>
+        </section>
+      </aside>
+
+      <section class="content">
+        <div id="emptyState" class="empty">
+          <div class="empty__title">请选择一个题目</div>
+          <div class="empty__hint">
+            左侧支持按 GPU（NVIDIA/AMD/Intel）视角、难度、语言框架统一筛选；选中后可在同一页面切换
+            CUDA/Triton/CUTE/CuTile-Python starter。
+          </div>
+        </div>
+
+        <article id="detail" class="detail hidden">
+          <div class="detail__header">
+            <div class="detail__title">
+              <div id="detailTitle" class="title"></div>
+              <div id="detailBadges" class="badges"></div>
+            </div>
+            <div class="detail__actions">
+              <a id="openChallengePy" class="btn" target="_blank" rel="noreferrer">challenge.py</a>
+              <a id="openChallengeHtml" class="btn" target="_blank" rel="noreferrer">challenge.html</a>
+            </div>
+          </div>
+
+          <div class="split">
+            <section class="card">
+              <div class="card__title">题目描述</div>
+              <iframe id="problemFrame" class="frame" loading="lazy" referrerpolicy="no-referrer"></iframe>
+            </section>
+
+            <section class="card">
+              <div class="card__title row">
+                <span>Starter（统一入口）</span>
+                <span class="row__right">
+                  <a id="openStarterFile" class="btn btn--ghost" target="_blank" rel="noreferrer">打开文件</a>
+                  <button id="copyCode" class="btn btn--ghost" type="button">复制</button>
+                </span>
+              </div>
+              <div id="fwTabs" class="tabs"></div>
+              <pre class="code"><code id="codeBlock">选择一个语言/框架 tab…</code></pre>
+              <div id="codeNote" class="note"></div>
+            </section>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__left">数据来自仓库本地的 <code>challenges/</code> 与 <code>starter/</code> 文件。</div>
+      <div class="footer__right">
+        重新生成索引：<code>python3 scripts/build_unified_gpu_language_site.py</code>
+      </div>
+    </footer>
+
+    <script type="module" src="static/ugll.js"></script>
+  </body>
+</html>
+
