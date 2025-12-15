@@ -2,9 +2,17 @@ from __future__ import annotations
 
 import os
 import sys
+from pathlib import Path
 
 from redis import Redis
 from rq import Worker
+
+# When running inside containers or with varying working directories,
+# ensure the repository root (containing the `services/` package) is importable.
+# This also avoids relying on `python -m services....` module resolution.
+_repo_root = Path(__file__).resolve().parents[4]
+if str(_repo_root) not in sys.path:
+    sys.path.insert(0, str(_repo_root))
 
 from services.shared.queueing import QueueNames
 from services.shared.settings import load_settings

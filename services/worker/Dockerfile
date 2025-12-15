@@ -10,5 +10,5 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY services /app/services
 
-CMD ["python", "-m", "services.worker.app.worker"]
+CMD ["python", "/app/services/worker/app/worker.py"]
 
