@@ -35,7 +35,7 @@ services:
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
       JWT_SECRET: dev-secret-change-me
-      PYTHONPATH: /repo
+      PYTHONPATH: /app:/repo
     volumes:
       - ./:/repo
     working_dir: /repo
@@ -56,7 +56,7 @@ services:
       DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
-      PYTHONPATH: /repo
+      PYTHONPATH: /app:/repo
       WORKER_VENDOR: any
       JOB_EXECUTOR: docker
       IMAGE_PYTHON: python:3.11-slim
@@ -82,7 +82,7 @@ services:
       DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
-      PYTHONPATH: /repo
+      PYTHONPATH: /app:/repo
       WORKER_VENDOR: nvidia
       JOB_EXECUTOR: docker
       IMAGE_PYTHON: python:3.11-slim
@@ -104,7 +104,7 @@ services:
       DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
-      PYTHONPATH: /repo
+      PYTHONPATH: /app:/repo
       WORKER_VENDOR: amd
       JOB_EXECUTOR: docker
       IMAGE_PYTHON: python:3.11-slim
@@ -126,7 +126,7 @@ services:
       DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
       REPO_ROOT: /repo
       ARTIFACTS_DIR: /repo/artifacts
-      PYTHONPATH: /repo
+      PYTHONPATH: /app:/repo
       WORKER_VENDOR: apple
       # In practice, Metal GPU access is host-specific; default to local executor on macOS nodes.
       JOB_EXECUTOR: local
