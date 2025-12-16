@@ -534,7 +534,20 @@ function renderJobsList() {
     wrap.appendChild(div);
     return;
   }
-  const jobs = (state.auth.jobs || []).slice(0, 30);
+  const jobsAll = Array.isArray(state.auth.jobs) ? state.auth.jobs.slice() : [];
+  // Sort finished jobs by runtime asc (fastest first). Keep unfinished jobs after, newest first.
+  jobsAll.sort((a, b) => {
+    const aRt = typeof a.runtime_ms === "number" ? a.runtime_ms : null;
+    const bRt = typeof b.runtime_ms === "number" ? b.runtime_ms : null;
+    const aFinished = (a.status === "succeeded" || a.status === "failed" || a.status === "cancelled") && aRt !== null;
+    const bFinished = (b.status === "succeeded" || b.status === "failed" || b.status === "cancelled") && bRt !== null;
+    if (aFinished && bFinished) return aRt - bRt;
+    if (aFinished && !bFinished) return -1;
+    if (!aFinished && bFinished) return 1;
+    // fallback: newest first
+    return (b.id || 0) - (a.id || 0);
+  });
+  const jobs = jobsAll.slice(0, 30);
   if (jobs.length === 0) {
     const div = document.createElement("div");
     div.className = "meta";
@@ -571,7 +584,8 @@ async function selectJob(jobId) {
   try {
     const d = await apiFetch(`/jobs/${jobId}`, { method: "GET" });
     const parts = [];
-    parts.push(`job #${d.id} status=${d.status} exit_code=${d.exit_code ?? ""}`);
+    const rt = typeof d.runtime_ms === "number" ? ` runtime_ms=${d.runtime_ms}` : "";
+    parts.push(`job #${d.id} status=${d.status} exit_code=${d.exit_code ?? ""}${rt}`);
     if (d.error) parts.push(`\n[error]\n${d.error}`);
     if (d.stdout) parts.push(`\n[stdout]\n${d.stdout}`);
     if (d.stderr) parts.push(`\n[stderr]\n${d.stderr}`);
