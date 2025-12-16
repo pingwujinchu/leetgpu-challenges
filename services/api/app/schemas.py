@@ -55,6 +55,7 @@ class JobResponse(BaseModel):
     queued_at: datetime
     started_at: Optional[datetime]
     finished_at: Optional[datetime]
+    runtime_ms: Optional[int] = None
     exit_code: Optional[int]
 
 

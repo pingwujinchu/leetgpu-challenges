@@ -65,7 +65,7 @@ async function apiFetch(path, opts = {}) {
     ...authHeader(),
     ...(opts.headers || {}),
   };
-  const res = await fetch(path, { ...opts, headers });
+  const res = await fetch(path, { ...opts, headers, credentials: "same-origin" });
   const ct = res.headers.get("content-type") || "";
   const body = ct.includes("application/json") ? await res.json().catch(() => null) : await res.text().catch(() => "");
   if (!res.ok) {
@@ -76,10 +76,6 @@ async function apiFetch(path, opts = {}) {
 }
 
 async function loadMe() {
-  if (!state.auth.token) {
-    state.auth.me = null;
-    return null;
-  }
   try {
     state.auth.me = await apiFetch("/me", { method: "GET" });
     return state.auth.me;
@@ -285,7 +281,7 @@ function renderTabs(c, selectedFw) {
 }
 
 async function loadText(path) {
-  const res = await fetch(path, { cache: "no-store" });
+  const res = await fetch(path, { cache: "no-store", credentials: "same-origin" });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${path}`);
   return await res.text();
 }
@@ -310,7 +306,9 @@ async function loadStarterFor(c, fwId) {
     return { ok: true, text, fw };
   } catch (e) {
     state.editor.starter = "";
-    return { ok: false, text: `Starter 加载失败：${String(e?.message || e)}`, fw };
+    const msg = String(e?.message || e);
+    if (msg.includes("HTTP 401")) return { ok: false, text: "请先登录后再查看题面与 Starter。", fw };
+    return { ok: false, text: `Starter 加载失败：${msg}`, fw };
   }
 }
 
@@ -340,6 +338,11 @@ function renderDetail(c, fwId) {
 }
 
 function selectChallenge(key, fwId) {
+  if (!state.auth.me) {
+    setAuthMsg("请先登录后再做题（查看题面/Starter）。");
+    setDetailVisible(false);
+    return;
+  }
   const c = (state.data?.challenges || []).find((x) => challengeKey(x) === key);
   if (!c) return;
 
@@ -392,6 +395,8 @@ function wireControls() {
   };
 
   $("logoutBtn").onclick = () => {
+    // Best-effort server-side logout (clears httpOnly cookie).
+    apiFetch("/auth/logout", { method: "POST" }).catch(() => null);
     state.auth.token = null;
     state.auth.me = null;
     localStorage.removeItem(AUTH_TOKEN_KEY);
@@ -441,7 +446,7 @@ function wireControls() {
 
   $("submitJob").onclick = async () => {
     setSubmitMsg("");
-    if (!state.auth.token) {
+    if (!state.auth.me && !state.auth.token) {
       setSubmitMsg("请先登录（多租户：tenant/username）。");
       return;
     }
@@ -485,7 +490,7 @@ function statusPill(status) {
 }
 
 async function refreshJobs(force = false) {
-  if (!state.auth.token) return;
+  if (!state.auth.me && !state.auth.token) return;
   const now = Date.now();
   if (!force && now - state.auth.lastJobsFetchMs < 1500) return;
   state.auth.lastJobsFetchMs = now;
@@ -524,7 +529,8 @@ function renderJobsList() {
     const top = document.createElement("div");
     top.className = "jobItemTop";
     const left = document.createElement("div");
-    left.textContent = `#${j.id} ${j.challenge_key} · ${j.framework} · ${j.gpu_vendor}`;
+    const rt = typeof j.runtime_ms === "number" ? ` · ${j.runtime_ms}ms` : "";
+    left.textContent = `#${j.id} ${j.challenge_key} · ${j.framework} · ${j.gpu_vendor}${rt}`;
     const st = statusPill(j.status);
     top.appendChild(left);
     top.appendChild(st);
