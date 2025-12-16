@@ -59,27 +59,40 @@ function authHeader() {
   return state.auth.token ? { Authorization: `Bearer ${state.auth.token}` } : {};
 }
 
+function formatApiError(res, body) {
+  // FastAPI validation errors: { detail: [{ loc: [...], msg: "...", type: "..." }, ...] }
+  if (body && typeof body === "object" && Array.isArray(body.detail)) {
+    const items = body.detail
+      .map((e) => {
+        const loc = Array.isArray(e.loc) ? e.loc.filter((x) => x !== "body") : [];
+        const where = loc.length ? loc.join(".") : "";
+        const msg = e.msg ? String(e.msg) : "Invalid request";
+        return where ? `${where}: ${msg}` : msg;
+      })
+      .filter(Boolean);
+    if (items.length) return items.join("；");
+  }
+  if (body?.detail) return typeof body.detail === "string" ? body.detail : JSON.stringify(body.detail);
+  if (typeof body === "string" && body) return body;
+  return `HTTP ${res?.status ?? ""}`.trim();
+}
+
 async function apiFetch(path, opts = {}) {
   const headers = {
     "Content-Type": "application/json",
     ...authHeader(),
     ...(opts.headers || {}),
   };
-  const res = await fetch(path, { ...opts, headers });
+  const res = await fetch(path, { ...opts, headers, credentials: "same-origin" });
   const ct = res.headers.get("content-type") || "";
   const body = ct.includes("application/json") ? await res.json().catch(() => null) : await res.text().catch(() => "");
   if (!res.ok) {
-    const msg = body?.detail ? String(body.detail) : typeof body === "string" ? body : `HTTP ${res.status}`;
-    throw new Error(msg);
+    throw new Error(formatApiError(res, body));
   }
   return body;
 }
 
 async function loadMe() {
-  if (!state.auth.token) {
-    state.auth.me = null;
-    return null;
-  }
   try {
     state.auth.me = await apiFetch("/me", { method: "GET" });
     return state.auth.me;
@@ -285,7 +298,7 @@ function renderTabs(c, selectedFw) {
 }
 
 async function loadText(path) {
-  const res = await fetch(path, { cache: "no-store" });
+  const res = await fetch(path, { cache: "no-store", credentials: "same-origin" });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${path}`);
   return await res.text();
 }
@@ -310,7 +323,9 @@ async function loadStarterFor(c, fwId) {
     return { ok: true, text, fw };
   } catch (e) {
     state.editor.starter = "";
-    return { ok: false, text: `Starter 加载失败：${String(e?.message || e)}`, fw };
+    const msg = String(e?.message || e);
+    if (msg.includes("HTTP 401")) return { ok: false, text: "请先登录后再查看题面与 Starter。", fw };
+    return { ok: false, text: `Starter 加载失败：${msg}`, fw };
   }
 }
 
@@ -340,6 +355,11 @@ function renderDetail(c, fwId) {
 }
 
 function selectChallenge(key, fwId) {
+  if (!state.auth.me) {
+    setAuthMsg("请先登录后再做题（查看题面/Starter）。");
+    setDetailVisible(false);
+    return;
+  }
   const c = (state.data?.challenges || []).find((x) => challengeKey(x) === key);
   if (!c) return;
 
@@ -392,6 +412,8 @@ function wireControls() {
   };
 
   $("logoutBtn").onclick = () => {
+    // Best-effort server-side logout (clears httpOnly cookie).
+    apiFetch("/auth/logout", { method: "POST" }).catch(() => null);
     state.auth.token = null;
     state.auth.me = null;
     localStorage.removeItem(AUTH_TOKEN_KEY);
@@ -420,9 +442,12 @@ function wireControls() {
   $("registerBtn").onclick = async () => {
     setAuthMsg("");
     try {
-      const tenant = /** @type {HTMLInputElement} */ ($("tenantInput")).value;
-      const username = /** @type {HTMLInputElement} */ ($("usernameInput")).value;
+      const tenant = /** @type {HTMLInputElement} */ ($("tenantInput")).value.trim();
+      const username = /** @type {HTMLInputElement} */ ($("usernameInput")).value.trim();
       const password = /** @type {HTMLInputElement} */ ($("passwordInput")).value;
+      if (!tenant) throw new Error("tenant 不能为空");
+      if (username.length < 3) throw new Error("username 至少 3 位");
+      if ((password || "").length < 8) throw new Error("password 至少 8 位");
       await apiFetch("/auth/register", { method: "POST", body: JSON.stringify({ tenant, username, password }) });
       setAuthMsg("注册成功，请点击登录");
     } catch (e) {
@@ -441,7 +466,7 @@ function wireControls() {
 
   $("submitJob").onclick = async () => {
     setSubmitMsg("");
-    if (!state.auth.token) {
+    if (!state.auth.me && !state.auth.token) {
       setSubmitMsg("请先登录（多租户：tenant/username）。");
       return;
     }
@@ -485,7 +510,7 @@ function statusPill(status) {
 }
 
 async function refreshJobs(force = false) {
-  if (!state.auth.token) return;
+  if (!state.auth.me && !state.auth.token) return;
   const now = Date.now();
   if (!force && now - state.auth.lastJobsFetchMs < 1500) return;
   state.auth.lastJobsFetchMs = now;
@@ -509,7 +534,20 @@ function renderJobsList() {
     wrap.appendChild(div);
     return;
   }
-  const jobs = (state.auth.jobs || []).slice(0, 30);
+  const jobsAll = Array.isArray(state.auth.jobs) ? state.auth.jobs.slice() : [];
+  // Sort finished jobs by runtime asc (fastest first). Keep unfinished jobs after, newest first.
+  jobsAll.sort((a, b) => {
+    const aRt = typeof a.runtime_ms === "number" ? a.runtime_ms : null;
+    const bRt = typeof b.runtime_ms === "number" ? b.runtime_ms : null;
+    const aFinished = (a.status === "succeeded" || a.status === "failed" || a.status === "cancelled") && aRt !== null;
+    const bFinished = (b.status === "succeeded" || b.status === "failed" || b.status === "cancelled") && bRt !== null;
+    if (aFinished && bFinished) return aRt - bRt;
+    if (aFinished && !bFinished) return -1;
+    if (!aFinished && bFinished) return 1;
+    // fallback: newest first
+    return (b.id || 0) - (a.id || 0);
+  });
+  const jobs = jobsAll.slice(0, 30);
   if (jobs.length === 0) {
     const div = document.createElement("div");
     div.className = "meta";
@@ -524,7 +562,8 @@ function renderJobsList() {
     const top = document.createElement("div");
     top.className = "jobItemTop";
     const left = document.createElement("div");
-    left.textContent = `#${j.id} ${j.challenge_key} · ${j.framework} · ${j.gpu_vendor}`;
+    const rt = typeof j.runtime_ms === "number" ? ` · ${j.runtime_ms}ms` : "";
+    left.textContent = `#${j.id} ${j.challenge_key} · ${j.framework} · ${j.gpu_vendor}${rt}`;
     const st = statusPill(j.status);
     top.appendChild(left);
     top.appendChild(st);
@@ -545,7 +584,8 @@ async function selectJob(jobId) {
   try {
     const d = await apiFetch(`/jobs/${jobId}`, { method: "GET" });
     const parts = [];
-    parts.push(`job #${d.id} status=${d.status} exit_code=${d.exit_code ?? ""}`);
+    const rt = typeof d.runtime_ms === "number" ? ` runtime_ms=${d.runtime_ms}` : "";
+    parts.push(`job #${d.id} status=${d.status} exit_code=${d.exit_code ?? ""}${rt}`);
     if (d.error) parts.push(`\n[error]\n${d.error}`);
     if (d.stdout) parts.push(`\n[stdout]\n${d.stdout}`);
     if (d.stderr) parts.push(`\n[stderr]\n${d.stderr}`);

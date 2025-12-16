@@ -30,21 +30,23 @@ def _safe_env(extra: Optional[Dict[str, str]] = None) -> Dict[str, str]:
 def local_compile_only(framework: str, source_path: Path) -> ExecResult:
     """
     Minimal fallback executor: performs a compile/syntax check only.
-    This is NOT strong isolation; use docker executor in production.
+    This is NOT strong isolation; use container/sandbox execution in production.
     """
     if framework in {"triton", "cute", "cutile"}:
         cmd = ["python3", "-m", "py_compile", str(source_path)]
     elif framework == "cuda":
-        return ExecResult(
-            exit_code=1,
-            stdout="",
-            stderr="",
-            error="Local CUDA compilation is not enabled in fallback mode. Use Docker executor on a CUDA-enabled node.",
-        )
+        nvcc = os.environ.get("NVCC_BIN", "nvcc")
+        out = source_path.parent / "solution.o"
+        cmd = [nvcc, "-c", str(source_path), "-o", str(out)]
     else:
         return ExecResult(exit_code=1, stdout="", stderr="", error=f"Unknown framework: {framework}")
 
-    p = subprocess.run(cmd, capture_output=True, text=True, env=_safe_env())
+    try:
+        p = subprocess.run(cmd, capture_output=True, text=True, env=_safe_env())
+    except FileNotFoundError as e:
+        if framework == "cuda":
+            return ExecResult(exit_code=1, stdout="", stderr="", error=f"nvcc not found: {e}")
+        return ExecResult(exit_code=1, stdout="", stderr="", error=str(e))
     return ExecResult(exit_code=p.returncode, stdout=p.stdout, stderr=p.stderr)
 
 

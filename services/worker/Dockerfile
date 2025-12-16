@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM micr.cloud.mioffice.cn/cloudml-preset/cuda:12.9.1-py3.12-ubuntu22.04-0.1
 
 WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \

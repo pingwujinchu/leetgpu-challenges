@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Generator, Optional
 
-from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi import Cookie, Depends, FastAPI, Header, HTTPException, Response, status
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from redis import Redis
@@ -32,6 +32,7 @@ settings = load_settings()
 SessionFactory, engine = make_session_factory(settings.database_url)
 
 IMAGE_ROOT = Path(__file__).resolve().parents[4]  # /app inside container image
+AUTH_COOKIE_NAME = "ugll_token"
 
 
 def init_db() -> None:
@@ -65,10 +66,11 @@ def _bearer_token(authorization: Optional[str]) -> Optional[str]:
 def get_current_user(
     db: Session = Depends(get_db),
     authorization: Optional[str] = Header(default=None),
+    ugll_token: Optional[str] = Cookie(default=None),
 ) -> User:
-    token = _bearer_token(authorization)
+    token = _bearer_token(authorization) or (ugll_token.strip() if ugll_token else None)
     if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing Bearer token")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing auth token")
     try:
         payload = authlib.decode_token(token, secret=settings.jwt_secret, algorithm=settings.jwt_algorithm)
     except ValueError:
@@ -116,8 +118,31 @@ def _startup() -> None:
     )
     if static_dir.is_dir():
         app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
-    if challenges_dir.is_dir():
-        app.mount("/challenges", StaticFiles(directory=str(challenges_dir)), name="challenges")
+
+
+def _challenges_root() -> Path:
+    # Prefer mounted repo root; fall back to image root.
+    if (settings.repo_root / "challenges").is_dir():
+        return (settings.repo_root / "challenges").resolve()
+    return (IMAGE_ROOT / "challenges").resolve()
+
+
+@app.get("/challenges/{path:path}", include_in_schema=False)
+def challenges_files(path: str, user: User = Depends(get_current_user)) -> FileResponse:
+    """
+    Protected challenge assets (html/py/starter/*).
+
+    We protect this with cookie-auth (and also accept Bearer token) so that iframe loads work.
+    """
+    root = _challenges_root()
+    # Prevent path traversal.
+    rel = Path(path)
+    abs_path = (root / rel).resolve()
+    if root not in abs_path.parents and abs_path != root:
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if not abs_path.is_file():
+        raise HTTPException(status_code=404, detail="Not found")
+    return FileResponse(str(abs_path))
 
 
 @app.get("/", include_in_schema=False)
@@ -177,7 +202,7 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)) -> MeResponse:
 
 
 @app.post("/auth/login", response_model=TokenResponse)
-def login(req: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse:
+def login(req: LoginRequest, response: Response, db: Session = Depends(get_db)) -> TokenResponse:
     tenant_name = req.tenant.strip()
     username = req.username.strip()
     tenant = db.execute(select(Tenant).where(Tenant.name == tenant_name)).scalar_one_or_none()
@@ -195,7 +220,22 @@ def login(req: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse:
         expires_minutes=settings.jwt_exp_minutes,
         extra_claims={"role": user.role.value, "tenant": tenant.name},
     )
+    # Also set an httpOnly cookie so /challenges/* assets (iframe) can be gated by login.
+    response.set_cookie(
+        key=AUTH_COOKIE_NAME,
+        value=token,
+        httponly=True,
+        samesite="lax",
+        secure=False,  # can be flipped by reverse proxy / TLS termination in prod
+        path="/",
+    )
     return TokenResponse(access_token=token)
+
+
+@app.post("/auth/logout")
+def logout(response: Response) -> dict:
+    response.delete_cookie(key=AUTH_COOKIE_NAME, path="/")
+    return {"ok": True}
 
 
 @app.get("/me", response_model=MeResponse)
@@ -226,6 +266,15 @@ def _validate_challenge_exists(challenge_key: str) -> Path:
 def _artifact_path_for_job(job_id: int, framework: str) -> Path:
     ext = "cu" if framework == "cuda" else "py"
     return settings.artifacts_dir / "jobs" / str(job_id) / f"solution.{ext}"
+
+
+def _runtime_ms(j: Job) -> Optional[int]:
+    if not j.started_at or not j.finished_at:
+        return None
+    try:
+        return int((j.finished_at - j.started_at).total_seconds() * 1000)
+    except Exception:
+        return None
 
 
 @app.post("/jobs", response_model=JobResponse)
@@ -276,6 +325,7 @@ def submit_job(
         queued_at=job.queued_at,
         started_at=job.started_at,
         finished_at=job.finished_at,
+        runtime_ms=_runtime_ms(job),
         exit_code=job.exit_code,
     )
 
@@ -286,9 +336,19 @@ def list_jobs(
     user: User = Depends(get_current_user),
 ) -> list[JobResponse]:
     if user.role == UserRole.admin:
-        rows = db.execute(select(Job).order_by(Job.id.desc())).scalars().all()
+        rows = db.execute(select(Job)).scalars().all()
     else:
-        rows = db.execute(select(Job).where(Job.user_id == user.id).order_by(Job.id.desc())).scalars().all()
+        rows = db.execute(select(Job).where(Job.user_id == user.id)).scalars().all()
+
+    # Default ordering: once finished, sort by elapsed time (ascending).
+    # Keep unfinished jobs after finished ones, with most recent first.
+    def sort_key(j: Job):
+        rt = _runtime_ms(j)
+        finished = j.status in {JobStatus.succeeded, JobStatus.failed, JobStatus.cancelled} and rt is not None
+        # (finished first, faster first, then latest id)
+        return (0, rt, -j.id) if finished else (1, -j.id)
+
+    rows_sorted = sorted(rows, key=sort_key)
     return [
         JobResponse(
             id=j.id,
@@ -300,9 +360,10 @@ def list_jobs(
             queued_at=j.queued_at,
             started_at=j.started_at,
             finished_at=j.finished_at,
+            runtime_ms=_runtime_ms(j),
             exit_code=j.exit_code,
         )
-        for j in rows
+        for j in rows_sorted
     ]
 
 
@@ -328,6 +389,7 @@ def get_job(
         queued_at=job.queued_at,
         started_at=job.started_at,
         finished_at=job.finished_at,
+        runtime_ms=_runtime_ms(job),
         exit_code=job.exit_code,
         stdout=job.stdout,
         stderr=job.stderr,
