@@ -13,5 +13,6 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 COPY services /app/services
 
 # We mount the repo at runtime for challenges/artifacts.
-CMD ["uvicorn", "services.api.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Use a tiny launcher that bootstraps sys.path reliably.
+CMD ["python", "/app/services/api/app/run.py"]
 
