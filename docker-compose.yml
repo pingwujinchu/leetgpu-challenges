@@ -58,14 +58,10 @@ services:
       ARTIFACTS_DIR: /repo/artifacts
       PYTHONPATH: /app:/repo
       WORKER_VENDOR: any
-      JOB_EXECUTOR: docker
-      IMAGE_PYTHON: python:3.11-slim
-      # For CUDA compile jobs, configure a CUDA build image (needs nvcc):
-      IMAGE_CUDA: nvidia/cuda:12.4.1-devel-ubuntu22.04
+      # Avoid "container-in-container": compile locally in the worker image (nvcc/python are provided by the base image).
+      JOB_EXECUTOR: local
     volumes:
       - ./:/repo
-      # Enable Docker execution from inside the worker container:
-      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /repo
     depends_on:
       redis:
@@ -84,12 +80,9 @@ services:
       ARTIFACTS_DIR: /repo/artifacts
       PYTHONPATH: /app:/repo
       WORKER_VENDOR: nvidia
-      JOB_EXECUTOR: docker
-      IMAGE_PYTHON: python:3.11-slim
-      IMAGE_CUDA: nvidia/cuda:12.4.1-devel-ubuntu22.04
+      JOB_EXECUTOR: local
     volumes:
       - ./:/repo
-      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /repo
     depends_on:
       redis:
@@ -108,8 +101,7 @@ services:
       ARTIFACTS_DIR: /repo/artifacts
       PYTHONPATH: /app:/repo
       WORKER_VENDOR: amd
-      JOB_EXECUTOR: docker
-      IMAGE_PYTHON: python:3.11-slim
+      JOB_EXECUTOR: local
     volumes:
       - ./:/repo
     working_dir: /repo
