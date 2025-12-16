@@ -60,12 +60,12 @@ services:
       WORKER_VENDOR: any
       JOB_EXECUTOR: docker
       IMAGE_PYTHON: python:3.11-slim
-      # For CUDA compile jobs, configure a CUDA build image:
-      # IMAGE_CUDA: nvidia/cuda:12.4.1-devel-ubuntu22.04
+      # For CUDA compile jobs, configure a CUDA build image (needs nvcc):
+      IMAGE_CUDA: nvidia/cuda:12.4.1-devel-ubuntu22.04
     volumes:
       - ./:/repo
-      # To enable Docker-isolation from inside the worker container, uncomment:
-      # - /var/run/docker.sock:/var/run/docker.sock
+      # Enable Docker execution from inside the worker container:
+      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /repo
     depends_on:
       redis:
@@ -86,8 +86,10 @@ services:
       WORKER_VENDOR: nvidia
       JOB_EXECUTOR: docker
       IMAGE_PYTHON: python:3.11-slim
+      IMAGE_CUDA: nvidia/cuda:12.4.1-devel-ubuntu22.04
     volumes:
       - ./:/repo
+      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /repo
     depends_on:
       redis:
