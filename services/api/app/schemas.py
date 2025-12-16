@@ -9,7 +9,8 @@ from pydantic import BaseModel, Field
 class RegisterRequest(BaseModel):
     tenant: str = Field(min_length=1, max_length=64)
     username: str = Field(min_length=3, max_length=64)
-    password: str = Field(min_length=8, max_length=256)
+    # Allow long passphrases; hashing uses bcrypt_sha256 (no 72-byte limit).
+    password: str = Field(min_length=8, max_length=4096)
 
 
 class LoginRequest(BaseModel):

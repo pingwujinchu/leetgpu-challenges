@@ -59,6 +59,24 @@ function authHeader() {
   return state.auth.token ? { Authorization: `Bearer ${state.auth.token}` } : {};
 }
 
+function formatApiError(res, body) {
+  // FastAPI validation errors: { detail: [{ loc: [...], msg: "...", type: "..." }, ...] }
+  if (body && typeof body === "object" && Array.isArray(body.detail)) {
+    const items = body.detail
+      .map((e) => {
+        const loc = Array.isArray(e.loc) ? e.loc.filter((x) => x !== "body") : [];
+        const where = loc.length ? loc.join(".") : "";
+        const msg = e.msg ? String(e.msg) : "Invalid request";
+        return where ? `${where}: ${msg}` : msg;
+      })
+      .filter(Boolean);
+    if (items.length) return items.join("；");
+  }
+  if (body?.detail) return typeof body.detail === "string" ? body.detail : JSON.stringify(body.detail);
+  if (typeof body === "string" && body) return body;
+  return `HTTP ${res?.status ?? ""}`.trim();
+}
+
 async function apiFetch(path, opts = {}) {
   const headers = {
     "Content-Type": "application/json",
@@ -69,8 +87,7 @@ async function apiFetch(path, opts = {}) {
   const ct = res.headers.get("content-type") || "";
   const body = ct.includes("application/json") ? await res.json().catch(() => null) : await res.text().catch(() => "");
   if (!res.ok) {
-    const msg = body?.detail ? String(body.detail) : typeof body === "string" ? body : `HTTP ${res.status}`;
-    throw new Error(msg);
+    throw new Error(formatApiError(res, body));
   }
   return body;
 }
@@ -425,9 +442,12 @@ function wireControls() {
   $("registerBtn").onclick = async () => {
     setAuthMsg("");
     try {
-      const tenant = /** @type {HTMLInputElement} */ ($("tenantInput")).value;
-      const username = /** @type {HTMLInputElement} */ ($("usernameInput")).value;
+      const tenant = /** @type {HTMLInputElement} */ ($("tenantInput")).value.trim();
+      const username = /** @type {HTMLInputElement} */ ($("usernameInput")).value.trim();
       const password = /** @type {HTMLInputElement} */ ($("passwordInput")).value;
+      if (!tenant) throw new Error("tenant 不能为空");
+      if (username.length < 3) throw new Error("username 至少 3 位");
+      if ((password || "").length < 8) throw new Error("password 至少 8 位");
       await apiFetch("/auth/register", { method: "POST", body: JSON.stringify({ tenant, username, password }) });
       setAuthMsg("注册成功，请点击登录");
     } catch (e) {
