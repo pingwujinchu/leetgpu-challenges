@@ -1,0 +1,141 @@
+name: leetgpu
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: leetgpu
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -prootpass --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
+      REPO_ROOT: /repo
+      ARTIFACTS_DIR: /repo/artifacts
+      JWT_SECRET: dev-secret-change-me
+      PYTHONPATH: /app:/repo
+    volumes:
+      - ./:/repo
+    working_dir: /repo
+    ports:
+      - "80:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
+  worker-any:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
+      REPO_ROOT: /repo
+      ARTIFACTS_DIR: /repo/artifacts
+      PYTHONPATH: /app:/repo
+      WORKER_VENDOR: any
+      JOB_EXECUTOR: docker
+      IMAGE_PYTHON: python:3.11-slim
+      # For CUDA compile jobs, configure a CUDA build image:
+      # IMAGE_CUDA: nvidia/cuda:12.4.1-devel-ubuntu22.04
+    volumes:
+      - ./:/repo
+      # To enable Docker-isolation from inside the worker container, uncomment:
+      # - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /repo
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
+  worker-nvidia:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
+      REPO_ROOT: /repo
+      ARTIFACTS_DIR: /repo/artifacts
+      PYTHONPATH: /app:/repo
+      WORKER_VENDOR: nvidia
+      JOB_EXECUTOR: docker
+      IMAGE_PYTHON: python:3.11-slim
+    volumes:
+      - ./:/repo
+    working_dir: /repo
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
+  worker-amd:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
+      REPO_ROOT: /repo
+      ARTIFACTS_DIR: /repo/artifacts
+      PYTHONPATH: /app:/repo
+      WORKER_VENDOR: amd
+      JOB_EXECUTOR: docker
+      IMAGE_PYTHON: python:3.11-slim
+    volumes:
+      - ./:/repo
+    working_dir: /repo
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
+  worker-apple:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: mysql+pymysql://root:rootpass@mysql:3306/leetgpu
+      REPO_ROOT: /repo
+      ARTIFACTS_DIR: /repo/artifacts
+      PYTHONPATH: /app:/repo
+      WORKER_VENDOR: apple
+      # In practice, Metal GPU access is host-specific; default to local executor on macOS nodes.
+      JOB_EXECUTOR: local
+    volumes:
+      - ./:/repo
+    working_dir: /repo
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+

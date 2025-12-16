@@ -69,3 +69,6 @@ env/
 **/*.pyc
 **/*.pyo
 **/*.pyd
+
+# runtime artifacts (api/worker db + job sources)
+artifacts/
