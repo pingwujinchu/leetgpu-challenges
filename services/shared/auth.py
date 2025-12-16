@@ -7,7 +7,10 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# bcrypt has an effective 72-byte password limit. Using bcrypt_sha256 avoids the limit
+# by pre-hashing the password with SHA-256 before feeding it to bcrypt.
+# Keep plain bcrypt for backwards compatibility with existing hashes.
+pwd_context = CryptContext(schemes=["bcrypt_sha256", "bcrypt"], deprecated="auto")
 
 
 def hash_password(password: str) -> str:
@@ -15,7 +18,11 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(password: str, password_hash: str) -> bool:
-    return pwd_context.verify(password, password_hash)
+    try:
+        return pwd_context.verify(password, password_hash)
+    except ValueError:
+        # e.g. bcrypt "password cannot be longer than 72 bytes"
+        return False
 
 
 def create_access_token(
