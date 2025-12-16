@@ -31,6 +31,8 @@ from services.shared.settings import load_settings
 settings = load_settings()
 SessionFactory, engine = make_session_factory(settings.database_url)
 
+IMAGE_ROOT = Path(__file__).resolve().parents[4]  # /app inside container image
+
 
 def init_db() -> None:
     settings.artifacts_dir.mkdir(parents=True, exist_ok=True)
@@ -92,8 +94,13 @@ def _startup() -> None:
     # - /          -> repo_root/index.html
     # - /static/*  -> repo_root/static/*
     # - /challenges/* -> repo_root/challenges/*
-    static_dir = settings.repo_root / "static"
-    challenges_dir = settings.repo_root / "challenges"
+    # Prefer the mounted repo_root; fall back to files shipped in the image.
+    static_dir = (settings.repo_root / "static") if (settings.repo_root / "static").is_dir() else (IMAGE_ROOT / "static")
+    challenges_dir = (
+        (settings.repo_root / "challenges")
+        if (settings.repo_root / "challenges").is_dir()
+        else (IMAGE_ROOT / "challenges")
+    )
     if static_dir.is_dir():
         app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
     if challenges_dir.is_dir():
@@ -104,7 +111,9 @@ def _startup() -> None:
 def web_root():
     index_path = settings.repo_root / "index.html"
     if not index_path.is_file():
-        raise HTTPException(status_code=404, detail="index.html not found in repo root")
+        index_path = IMAGE_ROOT / "index.html"
+    if not index_path.is_file():
+        raise HTTPException(status_code=404, detail="index.html not found (neither mounted repo root nor image)")
     return FileResponse(str(index_path))
 
 
