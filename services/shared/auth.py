@@ -4,25 +4,36 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+from passlib.hash import pbkdf2_sha256
 
-
-# bcrypt has an effective 72-byte password limit. Using bcrypt_sha256 avoids the limit
-# by pre-hashing the password with SHA-256 before feeding it to bcrypt.
-# Keep plain bcrypt for backwards compatibility with existing hashes.
-pwd_context = CryptContext(schemes=["bcrypt_sha256", "bcrypt"], deprecated="auto")
+try:
+    import bcrypt as bcrypt_lib  # type: ignore
+except Exception:  # pragma: no cover
+    bcrypt_lib = None
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    # Use pbkdf2_sha256 to avoid passlib<->bcrypt backend/version issues and the 72-byte limit.
+    return pbkdf2_sha256.hash(password)
 
 
 def verify_password(password: str, password_hash: str) -> bool:
-    try:
-        return pwd_context.verify(password, password_hash)
-    except ValueError:
-        # e.g. bcrypt "password cannot be longer than 72 bytes"
-        return False
+    # Preferred: pbkdf2_sha256 hashes.
+    if password_hash.startswith("$pbkdf2-sha256$"):
+        return pbkdf2_sha256.verify(password, password_hash)
+
+    # Backwards compatibility: verify bcrypt hashes without passlib's bcrypt backend.
+    # (passlib's bcrypt backend can break depending on installed bcrypt version)
+    if password_hash.startswith(("$2a$", "$2b$", "$2y$")):
+        if bcrypt_lib is None:
+            return False
+        try:
+            pw = password.encode("utf-8")[:72]  # bcrypt truncates at 72 bytes
+            return bcrypt_lib.checkpw(pw, password_hash.encode("utf-8"))
+        except Exception:
+            return False
+
+    return False
 
 
 def create_access_token(
