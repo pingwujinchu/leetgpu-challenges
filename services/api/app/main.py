@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Generator, Optional
 
 from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from redis import Redis
 from rq import Queue
 from sqlalchemy import select
@@ -86,6 +88,24 @@ app = FastAPI(title="LeetGPU Task API", version="0.1.0")
 @app.on_event("startup")
 def _startup() -> None:
     init_db()
+    # One-binary deployment: serve the unified website + challenge assets from this API process.
+    # - /          -> repo_root/index.html
+    # - /static/*  -> repo_root/static/*
+    # - /challenges/* -> repo_root/challenges/*
+    static_dir = settings.repo_root / "static"
+    challenges_dir = settings.repo_root / "challenges"
+    if static_dir.is_dir():
+        app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    if challenges_dir.is_dir():
+        app.mount("/challenges", StaticFiles(directory=str(challenges_dir)), name="challenges")
+
+
+@app.get("/", include_in_schema=False)
+def web_root():
+    index_path = settings.repo_root / "index.html"
+    if not index_path.is_file():
+        raise HTTPException(status_code=404, detail="index.html not found in repo root")
+    return FileResponse(str(index_path))
 
 
 @app.get("/healthz")

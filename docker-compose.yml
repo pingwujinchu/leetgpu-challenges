@@ -40,7 +40,7 @@ services:
       - ./:/repo
     working_dir: /repo
     ports:
-      - "8000:8000"
+      - "80:8000"
     depends_on:
       redis:
         condition: service_healthy
