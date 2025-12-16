@@ -1,8 +1,21 @@
 const $ = (id) => /** @type {HTMLElement} */ (document.getElementById(id));
 
+const AUTH_TOKEN_KEY = "ugll_token";
+
 const state = {
   data: null,
   selected: { key: null, fw: null },
+  auth: {
+    token: localStorage.getItem(AUTH_TOKEN_KEY),
+    me: null,
+    jobs: [],
+    selectedJobId: null,
+    lastJobsFetchMs: 0,
+  },
+  editor: {
+    starter: "",
+    touched: false,
+  },
   filters: {
     gpu: "any",
     q: "",
@@ -28,6 +41,66 @@ function badge(label, variant = "pill") {
 
 function setMeta(text) {
   $("listMeta").textContent = text;
+}
+
+function setAuthMsg(text) {
+  $("authMsg").textContent = text || "";
+}
+
+function setSubmitMsg(text) {
+  $("submitMsg").textContent = text || "";
+}
+
+function setAuthStatus(text) {
+  $("authStatus").textContent = text || "未登录";
+}
+
+function authHeader() {
+  return state.auth.token ? { Authorization: `Bearer ${state.auth.token}` } : {};
+}
+
+async function apiFetch(path, opts = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    ...authHeader(),
+    ...(opts.headers || {}),
+  };
+  const res = await fetch(path, { ...opts, headers });
+  const ct = res.headers.get("content-type") || "";
+  const body = ct.includes("application/json") ? await res.json().catch(() => null) : await res.text().catch(() => "");
+  if (!res.ok) {
+    const msg = body?.detail ? String(body.detail) : typeof body === "string" ? body : `HTTP ${res.status}`;
+    throw new Error(msg);
+  }
+  return body;
+}
+
+async function loadMe() {
+  if (!state.auth.token) {
+    state.auth.me = null;
+    return null;
+  }
+  try {
+    state.auth.me = await apiFetch("/me", { method: "GET" });
+    return state.auth.me;
+  } catch (e) {
+    // Token expired or invalid.
+    state.auth.token = null;
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    state.auth.me = null;
+    return null;
+  }
+}
+
+function renderAuthUI() {
+  const me = state.auth.me;
+  if (me) {
+    setAuthStatus(`已登录：${me.tenant}/${me.username} (${me.role})`);
+    $("logoutBtn").classList.remove("hidden");
+  } else {
+    setAuthStatus("未登录");
+    $("logoutBtn").classList.add("hidden");
+  }
 }
 
 function parseHash() {
@@ -217,43 +290,27 @@ async function loadText(path) {
   return await res.text();
 }
 
-async function renderCode(c, fwId) {
-  const code = $("codeBlock");
-  const note = $("codeNote");
-  const open = $("openStarterFile");
+async function loadStarterFor(c, fwId) {
   const fw = (c.frameworks || []).find((f) => f.id === fwId) || null;
-
   if (!fw) {
-    code.textContent = "未选择语言/框架。";
-    note.textContent = "";
-    open.href = "#";
-    open.classList.add("hidden");
-    return;
+    state.editor.starter = "";
+    return { ok: false, text: "未选择语言/框架。", fw: null };
   }
-
-  open.classList.remove("hidden");
-  open.href = fw.path;
-
   if (!fw.exists) {
-    code.textContent = `该题目没有 ${fw.label} starter 模板（当前仓库缺少：${fw.path}）。`;
-    note.textContent =
+    state.editor.starter = "";
+    const msg =
       fw.id === "cutile"
-        ? "提示：本仓库暂未提供 CuTile-Python 模板，但网站入口已预留（未来新增 starter 文件即可自动出现）。"
-        : "提示：部分题目可能只提供部分框架的 starter。";
-    return;
+        ? `该题目没有 ${fw.label} starter（缺少：${fw.path}）。提示：已预留 CuTile-Python 入口，未来补文件即可。`
+        : `该题目没有 ${fw.label} starter（缺少：${fw.path}）。`;
+    return { ok: false, text: msg, fw };
   }
-
   try {
-    code.textContent = "加载中…";
     const text = await loadText(fw.path);
-    code.textContent = text;
-    note.textContent =
-      state.filters.gpu === "any"
-        ? "可在顶部选择 GPU 视角（NVIDIA/AMD/Intel）来筛选与默认框架选择。"
-        : `当前 GPU 视角：${gpuLabel(state.filters.gpu)}（注意：实际可运行性取决于本地/服务端安装的 CUDA/HIP/驱动与框架版本）。`;
+    state.editor.starter = text;
+    return { ok: true, text, fw };
   } catch (e) {
-    code.textContent = `加载失败：${String(e?.message || e)}`;
-    note.textContent = "如果你是本地直接打开 HTML 文件，请用静态服务器方式访问（否则 fetch 可能被浏览器拦截）。";
+    state.editor.starter = "";
+    return { ok: false, text: `Starter 加载失败：${String(e?.message || e)}`, fw };
   }
 }
 
@@ -269,7 +326,17 @@ function renderDetail(c, fwId) {
 
   renderTabs(c, fwId);
   renderBadges(c, fwId);
-  renderCode(c, fwId);
+
+  // Default editor content: only autofill when user hasn't edited.
+  const editor = /** @type {HTMLTextAreaElement} */ ($("codeEditor"));
+  editor.placeholder = "选择一个语言/框架 tab…";
+  setSubmitMsg("");
+  loadStarterFor(c, fwId).then((r) => {
+    if (!state.editor.touched || !editor.value) {
+      editor.value = r.ok ? r.text : (r.text || "");
+      state.editor.touched = false;
+    }
+  });
 }
 
 function selectChallenge(key, fwId) {
@@ -319,21 +386,179 @@ function wireControls() {
     };
   }
 
-  $("copyCode").onclick = async () => {
-    const text = $("codeBlock").textContent || "";
+  const editor = /** @type {HTMLTextAreaElement} */ ($("codeEditor"));
+  editor.oninput = () => {
+    state.editor.touched = true;
+  };
+
+  $("logoutBtn").onclick = () => {
+    state.auth.token = null;
+    state.auth.me = null;
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    setAuthMsg("");
+    renderAuthUI();
+  };
+
+  $("loginBtn").onclick = async () => {
+    setAuthMsg("");
     try {
-      await navigator.clipboard.writeText(text);
-      $("copyCode").textContent = "已复制";
-      setTimeout(() => ($("copyCode").textContent = "复制"), 900);
-    } catch {
-      $("copyCode").textContent = "复制失败";
-      setTimeout(() => ($("copyCode").textContent = "复制"), 900);
+      const tenant = /** @type {HTMLInputElement} */ ($("tenantInput")).value;
+      const username = /** @type {HTMLInputElement} */ ($("usernameInput")).value;
+      const password = /** @type {HTMLInputElement} */ ($("passwordInput")).value;
+      const tok = await apiFetch("/auth/login", { method: "POST", body: JSON.stringify({ tenant, username, password }) });
+      state.auth.token = tok.access_token;
+      localStorage.setItem(AUTH_TOKEN_KEY, state.auth.token);
+      await loadMe();
+      renderAuthUI();
+      setAuthMsg("登录成功");
+      refreshJobs(true);
+    } catch (e) {
+      setAuthMsg(`登录失败：${String(e?.message || e)}`);
     }
   };
+
+  $("registerBtn").onclick = async () => {
+    setAuthMsg("");
+    try {
+      const tenant = /** @type {HTMLInputElement} */ ($("tenantInput")).value;
+      const username = /** @type {HTMLInputElement} */ ($("usernameInput")).value;
+      const password = /** @type {HTMLInputElement} */ ($("passwordInput")).value;
+      await apiFetch("/auth/register", { method: "POST", body: JSON.stringify({ tenant, username, password }) });
+      setAuthMsg("注册成功，请点击登录");
+    } catch (e) {
+      setAuthMsg(`注册失败：${String(e?.message || e)}`);
+    }
+  };
+
+  $("resetToStarter").onclick = async () => {
+    if (!state.selected.key || !state.selected.fw) return;
+    const c = (state.data?.challenges || []).find((x) => challengeKey(x) === state.selected.key);
+    if (!c) return;
+    const r = await loadStarterFor(c, state.selected.fw);
+    editor.value = r.text || "";
+    state.editor.touched = false;
+  };
+
+  $("submitJob").onclick = async () => {
+    setSubmitMsg("");
+    if (!state.auth.token) {
+      setSubmitMsg("请先登录（多租户：tenant/username）。");
+      return;
+    }
+    if (!state.selected.key || !state.selected.fw) {
+      setSubmitMsg("请先选择题目与语言/框架。");
+      return;
+    }
+    const source_code = editor.value || "";
+    if (!source_code.trim()) {
+      setSubmitMsg("代码为空。");
+      return;
+    }
+    const gpu_vendor = state.filters.gpu || "any";
+    const gpu_arch = /** @type {HTMLInputElement} */ ($("gpuArchInput")).value || null;
+    try {
+      const job = await apiFetch("/jobs", {
+        method: "POST",
+        body: JSON.stringify({
+          challenge_key: state.selected.key,
+          framework: state.selected.fw,
+          gpu_vendor,
+          gpu_arch,
+          source_code,
+        }),
+      });
+      setSubmitMsg(`已提交任务 #${job.id}（${job.status}）`);
+      refreshJobs(true);
+    } catch (e) {
+      setSubmitMsg(`提交失败：${String(e?.message || e)}`);
+    }
+  };
+
+  $("refreshJobs").onclick = () => refreshJobs(true);
+}
+
+function statusPill(status) {
+  if (status === "succeeded") return badge(status, "pill--ok");
+  if (status === "failed") return badge(status, "pill--bad");
+  if (status === "running") return badge(status, "pill--accent");
+  return badge(status, "pill");
+}
+
+async function refreshJobs(force = false) {
+  if (!state.auth.token) return;
+  const now = Date.now();
+  if (!force && now - state.auth.lastJobsFetchMs < 1500) return;
+  state.auth.lastJobsFetchMs = now;
+  try {
+    const jobs = await apiFetch("/jobs", { method: "GET" });
+    state.auth.jobs = Array.isArray(jobs) ? jobs : [];
+    renderJobsList();
+  } catch (e) {
+    // token might have expired
+    setSubmitMsg(`拉取任务失败：${String(e?.message || e)}`);
+  }
+}
+
+function renderJobsList() {
+  const wrap = $("jobsList");
+  wrap.innerHTML = "";
+  if (!state.auth.me) {
+    const div = document.createElement("div");
+    div.className = "meta";
+    div.textContent = "登录后可查看任务列表与日志。";
+    wrap.appendChild(div);
+    return;
+  }
+  const jobs = (state.auth.jobs || []).slice(0, 30);
+  if (jobs.length === 0) {
+    const div = document.createElement("div");
+    div.className = "meta";
+    div.textContent = "暂无任务。";
+    wrap.appendChild(div);
+    return;
+  }
+  for (const j of jobs) {
+    const item = document.createElement("div");
+    item.className = `jobItem ${state.auth.selectedJobId === j.id ? "active" : ""}`;
+    item.onclick = () => selectJob(j.id);
+    const top = document.createElement("div");
+    top.className = "jobItemTop";
+    const left = document.createElement("div");
+    left.textContent = `#${j.id} ${j.challenge_key} · ${j.framework} · ${j.gpu_vendor}`;
+    const st = statusPill(j.status);
+    top.appendChild(left);
+    top.appendChild(st);
+    const small = document.createElement("div");
+    small.className = "jobSmall";
+    small.textContent = `queued: ${j.queued_at}${j.finished_at ? ` · finished: ${j.finished_at}` : ""}`;
+    item.appendChild(top);
+    item.appendChild(small);
+    wrap.appendChild(item);
+  }
+}
+
+async function selectJob(jobId) {
+  state.auth.selectedJobId = jobId;
+  renderJobsList();
+  const log = $("jobLog");
+  log.textContent = "加载中…";
+  try {
+    const d = await apiFetch(`/jobs/${jobId}`, { method: "GET" });
+    const parts = [];
+    parts.push(`job #${d.id} status=${d.status} exit_code=${d.exit_code ?? ""}`);
+    if (d.error) parts.push(`\n[error]\n${d.error}`);
+    if (d.stdout) parts.push(`\n[stdout]\n${d.stdout}`);
+    if (d.stderr) parts.push(`\n[stderr]\n${d.stderr}`);
+    log.textContent = parts.join("\n");
+  } catch (e) {
+    log.textContent = `加载失败：${String(e?.message || e)}`;
+  }
 }
 
 async function init() {
   wireControls();
+  await loadMe();
+  renderAuthUI();
   try {
     const raw = await loadText("static/challenges.json");
     state.data = JSON.parse(raw);
@@ -355,6 +580,9 @@ async function init() {
   } else {
     setDetailVisible(false);
   }
+
+  // Background polling for jobs (only when logged in).
+  setInterval(() => refreshJobs(false), 3000);
 }
 
 window.addEventListener("hashchange", () => {

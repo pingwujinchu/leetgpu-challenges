@@ -23,7 +23,7 @@ from services.api.app.schemas import (
     TokenResponse,
 )
 from services.shared import auth as authlib
-from services.shared.db import Base, Job, JobStatus, User, UserRole, make_session_factory
+from services.shared.db import Base, Job, JobStatus, Tenant, User, UserRole, make_session_factory
 from services.shared.queueing import QueueNames
 from services.shared.settings import load_settings
 
@@ -74,10 +74,23 @@ def get_current_user(
     except ValueError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
     sub = payload.get("sub")
+    tenant_name = payload.get("tenant")
     if not sub:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
 
-    q = db.execute(select(User).where(User.username == sub))
+    username = sub
+    if ":" in sub:
+        maybe_tenant, maybe_user = sub.split(":", 1)
+        tenant_name = tenant_name or maybe_tenant
+        username = maybe_user
+    if not tenant_name:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing tenant in token")
+
+    q = db.execute(
+        select(User)
+        .join(Tenant, Tenant.id == User.tenant_id)
+        .where(Tenant.name == tenant_name, User.username == username)
+    )
     user = q.scalar_one_or_none()
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
@@ -124,46 +137,85 @@ def healthz() -> dict:
 
 @app.post("/auth/register", response_model=MeResponse)
 def register(req: RegisterRequest, db: Session = Depends(get_db)) -> MeResponse:
+    tenant_name = req.tenant.strip()
     username = req.username.strip()
     if not username:
         raise HTTPException(status_code=400, detail="Invalid username")
+    if not tenant_name:
+        raise HTTPException(status_code=400, detail="Invalid tenant")
 
-    existing = db.execute(select(User).where(User.username == username)).scalar_one_or_none()
+    tenant = db.execute(select(Tenant).where(Tenant.name == tenant_name)).scalar_one_or_none()
+    if not tenant:
+        tenant = Tenant(name=tenant_name)
+        db.add(tenant)
+        db.commit()
+        db.refresh(tenant)
+
+    existing = (
+        db.execute(select(User).where(User.tenant_id == tenant.id, User.username == username))
+        .scalar_one_or_none()
+    )
     if existing:
         raise HTTPException(status_code=409, detail="Username already exists")
 
-    user = User(username=username, password_hash=authlib.hash_password(req.password), role=UserRole.user)
+    user = User(
+        tenant_id=tenant.id,
+        username=username,
+        password_hash=authlib.hash_password(req.password),
+        role=UserRole.user,
+    )
     db.add(user)
     db.commit()
     db.refresh(user)
-    return MeResponse(id=user.id, username=user.username, role=user.role.value, created_at=user.created_at)
+    return MeResponse(
+        id=user.id,
+        tenant=tenant.name,
+        username=user.username,
+        role=user.role.value,
+        created_at=user.created_at,
+    )
 
 
 @app.post("/auth/login", response_model=TokenResponse)
 def login(req: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse:
-    user = db.execute(select(User).where(User.username == req.username)).scalar_one_or_none()
+    tenant_name = req.tenant.strip()
+    username = req.username.strip()
+    tenant = db.execute(select(Tenant).where(Tenant.name == tenant_name)).scalar_one_or_none()
+    if not tenant:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
+    user = db.execute(select(User).where(User.tenant_id == tenant.id, User.username == username)).scalar_one_or_none()
     if not user or not authlib.verify_password(req.password, user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
     token = authlib.create_access_token(
-        subject=user.username,
+        subject=f"{tenant.name}:{user.username}",
         secret=settings.jwt_secret,
         algorithm=settings.jwt_algorithm,
         expires_minutes=settings.jwt_exp_minutes,
-        extra_claims={"role": user.role.value},
+        extra_claims={"role": user.role.value, "tenant": tenant.name},
     )
     return TokenResponse(access_token=token)
 
 
 @app.get("/me", response_model=MeResponse)
-def me(user: User = Depends(get_current_user)) -> MeResponse:
-    return MeResponse(id=user.id, username=user.username, role=user.role.value, created_at=user.created_at)
+def me(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> MeResponse:
+    tenant = db.execute(select(Tenant).where(Tenant.id == user.tenant_id)).scalar_one()
+    return MeResponse(
+        id=user.id,
+        tenant=tenant.name,
+        username=user.username,
+        role=user.role.value,
+        created_at=user.created_at,
+    )
 
 
 def _validate_challenge_exists(challenge_key: str) -> Path:
     # challenge_key: "easy/1_vector_add"
     rel = Path("challenges") / challenge_key
     abs_path = (settings.repo_root / rel).resolve()
+    if not abs_path.exists():
+        abs_path = (IMAGE_ROOT / rel).resolve()
     if not abs_path.exists():
         raise HTTPException(status_code=404, detail=f"Challenge not found: {challenge_key}")
     if not (abs_path / "challenge.py").is_file() or not (abs_path / "challenge.html").is_file():
@@ -186,6 +238,7 @@ def submit_job(
     _validate_challenge_exists(req.challenge_key)
 
     job = Job(
+        tenant_id=user.tenant_id,
         user_id=user.id,
         challenge_key=req.challenge_key,
         framework=req.framework,

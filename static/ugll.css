@@ -168,6 +168,9 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
 .btn:hover { border-color: rgba(91, 140, 255, 0.45); }
 .btn--ghost { background: transparent; }
 
+.auth__grid { display: grid; gap: 10px; }
+.auth__actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
 .split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -215,6 +218,37 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libe
   background: rgba(11, 16, 32, 0.55);
 }
 .code code { white-space: pre; font-size: 12px; color: rgba(230, 235, 255, 0.92); line-height: 1.45; }
+
+.editorBar { padding: 12px; border-bottom: 1px solid var(--border); display: grid; gap: 8px; }
+.editor {
+  width: 100%;
+  min-height: 34vh;
+  resize: vertical;
+  padding: 12px;
+  border: 0;
+  outline: none;
+  background: rgba(11, 16, 32, 0.55);
+  color: rgba(230, 235, 255, 0.92);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.jobs { border-top: 1px solid var(--border); }
+.jobsList { padding: 10px 12px; display: grid; gap: 8px; max-height: 220px; overflow: auto; }
+.jobItem {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 48, 0.6);
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+}
+.jobItem:hover { border-color: rgba(91, 140, 255, 0.45); }
+.jobItem.active { border-color: rgba(47, 224, 184, 0.6); box-shadow: 0 0 0 4px rgba(47, 224, 184, 0.12); }
+.jobItemTop { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.jobSmall { font-size: 12px; color: var(--muted); }
 
 .note { padding: 10px 12px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
 

@@ -37,6 +37,33 @@
     <main class="layout">
       <aside class="sidebar">
         <section class="panel">
+          <div class="panel__title">租户登录</div>
+          <div class="auth">
+            <div id="authStatus" class="meta">未登录</div>
+            <div class="auth__grid">
+              <label class="control">
+                <span class="control__label">Tenant</span>
+                <input id="tenantInput" class="control__input" placeholder="例如: acme" />
+              </label>
+              <label class="control">
+                <span class="control__label">Username</span>
+                <input id="usernameInput" class="control__input" placeholder="例如: alice" />
+              </label>
+              <label class="control">
+                <span class="control__label">Password</span>
+                <input id="passwordInput" class="control__input" type="password" placeholder="至少 8 位" />
+              </label>
+            </div>
+            <div class="auth__actions">
+              <button id="loginBtn" class="btn" type="button">登录</button>
+              <button id="registerBtn" class="btn btn--ghost" type="button">注册</button>
+              <button id="logoutBtn" class="btn btn--ghost hidden" type="button">退出</button>
+            </div>
+            <div id="authMsg" class="note"></div>
+          </div>
+        </section>
+
+        <section class="panel">
           <div class="panel__title">筛选</div>
           <div class="filters">
             <div class="filterRow">
@@ -96,15 +123,33 @@
 
             <section class="card">
               <div class="card__title row">
-                <span>Starter（统一入口）</span>
+                <span>代码编辑 / 提交任务</span>
                 <span class="row__right">
-                  <a id="openStarterFile" class="btn btn--ghost" target="_blank" rel="noreferrer">打开文件</a>
-                  <button id="copyCode" class="btn btn--ghost" type="button">复制</button>
+                  <button id="resetToStarter" class="btn btn--ghost" type="button">填充 Starter</button>
+                  <button id="submitJob" class="btn" type="button">提交任务</button>
                 </span>
               </div>
               <div id="fwTabs" class="tabs"></div>
-              <pre class="code"><code id="codeBlock">选择一个语言/框架 tab…</code></pre>
-              <div id="codeNote" class="note"></div>
+              <div class="editorBar">
+                <label class="control">
+                  <span class="control__label">GPU Arch（可选）</span>
+                  <input id="gpuArchInput" class="control__input" placeholder="例如: sm80 / sm90 / gfx90a" />
+                </label>
+                <div class="meta">GPU vendor 取顶部选择；队列会按 vendor 分发。</div>
+              </div>
+              <textarea id="codeEditor" class="editor" spellcheck="false"></textarea>
+              <div id="submitMsg" class="note"></div>
+
+              <div class="jobs">
+                <div class="card__title row">
+                  <span>我的任务</span>
+                  <span class="row__right">
+                    <button id="refreshJobs" class="btn btn--ghost" type="button">刷新</button>
+                  </span>
+                </div>
+                <div id="jobsList" class="jobsList"></div>
+                <pre class="code"><code id="jobLog">选择一个任务查看日志…</code></pre>
+              </div>
             </section>
           </div>
         </article>

@@ -7,11 +7,13 @@ from pydantic import BaseModel, Field
 
 
 class RegisterRequest(BaseModel):
+    tenant: str = Field(min_length=1, max_length=64)
     username: str = Field(min_length=3, max_length=64)
     password: str = Field(min_length=8, max_length=256)
 
 
 class LoginRequest(BaseModel):
+    tenant: str
     username: str
     password: str
 
@@ -23,6 +25,7 @@ class TokenResponse(BaseModel):
 
 class MeResponse(BaseModel):
     id: int
+    tenant: str
     username: str
     role: str
     created_at: datetime
