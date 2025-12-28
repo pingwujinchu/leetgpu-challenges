@@ -1,0 +1,44 @@
+# LeetGPU Online Testing Website - GPU版本 Dockerfile
+# 基于内部 CUDA 镜像
+
+FROM micr.cloud.mioffice.cn/cloudml-preset/cuda:12.8.1-py3.12-ubuntu22.04-0.1
+
+# 设置标签
+LABEL maintainer="LeetGPU Team" \
+      version="1.0-gpu" \
+      description="LeetGPU Online Testing Website - GPU Edition" \
+      base.image="micr.cloud.mioffice.cn/cloudml-preset/cuda:12.8.1-py3.12-ubuntu22.04-0.1" \
+      cuda.version="12.8.1" \
+      python.version="3.12"
+
+# 设置工作目录
+WORKDIR /app
+
+# 设置环境变量
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    FLASK_APP=app.py \
+    FLASK_ENV=production \
+    PATH="/opt/venv/bin:$PATH"
+
+# 创建虚拟环境并安装依赖
+COPY requirements.txt .
+RUN python3 -m venv /opt/venv && \
+    /opt/venv/bin/pip install --no-cache-dir --upgrade pip && \
+    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
+
+# 复制应用文件
+COPY . .
+
+# 生成题目元数据
+RUN python generate_challenge_metadata.py || echo "Metadata will be generated at runtime"
+
+# 暴露端口
+EXPOSE 5000
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000/api/stats').read()" || exit 1
+
+# 启动应用
+CMD ["python", "app.py"]

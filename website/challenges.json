@@ -1,0 +1,808 @@
+[
+  {
+    "id": "19_reverse_array",
+    "path": "challenges/easy/19_reverse_array",
+    "name": "Reverse Array",
+    "difficulty": "easy",
+    "description": "Implement a program that reverses an array of 32-bit floating point numbers in-place. The program should perform an in-place reversal of",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "1_vector_add",
+    "path": "challenges/easy/1_vector_add",
+    "name": "Vector Addition",
+    "difficulty": "easy",
+    "description": "Implement a program that performs element-wise addition of two vectors containing 32-bit floating point numbers on a GPU. The program should take two input vectors of equal length and produce a single...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "21_relu",
+    "path": "challenges/easy/21_relu",
+    "name": "ReLU",
+    "difficulty": "easy",
+    "description": "Implement a program that performs the Rectified Linear Unit (ReLU) activation function on a vector of 32-bit floating point numbers. The ReLU function sets all negative values to zero and leaves posit...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "23_leaky_relu",
+    "path": "challenges/easy/23_leaky_relu",
+    "name": "Leaky ReLU",
+    "difficulty": "easy",
+    "description": "Implement a program that performs the leaky ReLU activation function on a vector of floating-point numbers. The leaky ReLU function is defined as: \\[ f(x) = \\begin{cases} x & \\text{if } x > 0 \\\\ \\alph...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "24_rainbow_table",
+    "path": "challenges/easy/24_rainbow_table",
+    "name": "Rainbow Table",
+    "difficulty": "easy",
+    "description": "Implement a program that performs",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "2_matrix_multiplication",
+    "path": "challenges/easy/2_matrix_multiplication",
+    "name": "Matrix Multiplication",
+    "difficulty": "easy",
+    "description": "Write a program that multiplies two matrices of 32-bit floating point numbers on a GPU. Given matrix \\(A\\) of dimensions \\(M \\times N\\) and matrix \\(B\\) of dimensions \\(N \\times K\\), compute the produ...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "31_matrix_copy",
+    "path": "challenges/easy/31_matrix_copy",
+    "name": "Matrix Copy",
+    "difficulty": "easy",
+    "description": "Implement a program that copies an \\(N \\times N\\) matrix of 32-bit floating point numbers from input array \\(A\\) to output array \\(B\\) on the GPU. The program should perform a direct element-wise copy...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "3_matrix_transpose",
+    "path": "challenges/easy/3_matrix_transpose",
+    "name": "Matrix Transpose",
+    "difficulty": "easy",
+    "description": "Write a program that transposes a matrix of 32-bit floating point numbers on a GPU. The transpose of a matrix switches its rows and columns. Given a matrix \\(A\\) of dimensions \\(rows \\times cols\\), th...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "41_simple_inference",
+    "path": "challenges/easy/41_simple_inference",
+    "name": "Simple Inference",
+    "difficulty": "easy",
+    "description": "Run inference on a PyTorch model. Given an input tensor and a trained",
+    "access_tier": "free",
+    "frameworks": [
+      "pytorch"
+    ]
+  },
+  {
+    "id": "43_count_array_element",
+    "path": "challenges/easy/43_count_array_element",
+    "name": "Count Array Element",
+    "difficulty": "easy",
+    "description": "Write a GPU program that counts the number of elements with the integer value k in an array of 32-bit integers. The program should count the number of elements with k in an array. You are given an inp...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "44_count_2d_array_element",
+    "path": "challenges/easy/44_count_2d_array_element",
+    "name": "Count 2D Array Element",
+    "difficulty": "easy",
+    "description": "Write a GPU program that counts the number of elements with the integer value k in an 2D array of 32-bit integers. The program should count the number of elements with k in an 2D array. You are given ...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "52_silu",
+    "path": "challenges/easy/52_silu",
+    "name": "Sigmoid Linear Unit",
+    "difficulty": "easy",
+    "description": "Implement the SiLU (Sigmoid Linear Unit) activation function forward pass for 1D input vectors. Given an input tensor of shape [N] where N is the number of elements, compute the output using the eleme...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "54_swiglu",
+    "path": "challenges/easy/54_swiglu",
+    "name": "Swish-Gated Linear Unit",
+    "difficulty": "easy",
+    "description": "Implement the Swish-Gated Linear Unit (SWiGLU) activation function forward pass for 1D input vectors. Given an input tensor of shape [N] where N is the number of elements, compute the output using the...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "7_color_inversion",
+    "path": "challenges/easy/7_color_inversion",
+    "name": "Color Inversion",
+    "difficulty": "easy",
+    "description": "Write a program to invert the colors of an image. The image is represented as a 1D array of RGBA (Red, Green, Blue, Alpha) values, where each component is an 8-bit unsigned integer (",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "9_1d_convolution",
+    "path": "challenges/easy/9_1d_convolution",
+    "name": "1D Convolution",
+    "difficulty": "easy",
+    "description": "Implement a program that performs a 1D convolution operation. Given an input array and a kernel (filter), compute the convolved output. The convolution should be performed with a \"valid\" boundary cond...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "10_2d_convolution",
+    "path": "challenges/medium/10_2d_convolution",
+    "name": "2D Convolution",
+    "difficulty": "medium",
+    "description": "Write a program that performs a 2D convolution operation on the GPU. Given an input matrix and a kernel (filter), compute the convolved output. The convolution should be performed with a \"valid\" bound...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "13_histogramming",
+    "path": "challenges/medium/13_histogramming",
+    "name": "Histogramming",
+    "difficulty": "medium",
+    "description": "Write a GPU program that computes the histogram of an array of 32-bit integers. The histogram should count the number of occurrences of each integer value in the range",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "15_sorting",
+    "path": "challenges/medium/15_sorting",
+    "name": "Sorting",
+    "difficulty": "medium",
+    "description": "Write a program that sorts an array of 32-bit floating-point numbers in ascending order. You are free to choose any sorting algorithm.",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "16_prefix_sum",
+    "path": "challenges/medium/16_prefix_sum",
+    "name": "Prefix Sum",
+    "difficulty": "medium",
+    "description": "Write a CUDA program that computes the prefix sum (cumulative sum) of an array of 32-bit floating point numbers. For an input array",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "17_dot_product",
+    "path": "challenges/medium/17_dot_product",
+    "name": "Dot Product",
+    "difficulty": "medium",
+    "description": "Implement a CUDA program that computes the dot product of two vectors containing 32-bit floating point numbers. The dot product is the sum of the products of the corresponding elements of two vectors.",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "18_sparse_matrix_vector_multiplication",
+    "path": "challenges/medium/18_sparse_matrix_vector_multiplication",
+    "name": "Sparse Matrix-Vector Multiplication",
+    "difficulty": "medium",
+    "description": "Implement a CUDA program that performs sparse matrix-vector multiplication. Given a sparse matrix \\(A\\) of dimensions \\(M \\times N\\) and a dense vector \\(x\\) of length \\(N\\), compute the product vecto...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "22_gemm",
+    "path": "challenges/medium/22_gemm",
+    "name": "General Matrix Multiplication (GEMM)",
+    "difficulty": "medium",
+    "description": "Implement a basic General Matrix Multiplication (GEMM). Given matrix \\(A\\) of dimensions \\(M \\times K\\), matrix \\(B\\) of dimensions \\(K \\times N\\), input/output matrix \\(C\\) of dimensions \\(M \\times N...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "25_categorical_cross_entropy_loss",
+    "path": "challenges/medium/25_categorical_cross_entropy_loss",
+    "name": "Categorical Cross Entropy Loss",
+    "difficulty": "medium",
+    "description": "Implement a CUDA program to calculate the categorical cross-entropy loss for a batch of predictions. Given a matrix of predicted logits \\(Z\\) of size \\(N \\times C\\) and a vector of true class labels",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "27_mean_squared_error",
+    "path": "challenges/medium/27_mean_squared_error",
+    "name": "Mean Squared Error",
+    "difficulty": "medium",
+    "description": "Implement a CUDA program to calculate the Mean Squared Error (MSE) between predicted values and target values. Given two arrays of equal length,",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "28_gaussian_blur",
+    "path": "challenges/medium/28_gaussian_blur",
+    "name": "Gaussian Blur",
+    "difficulty": "medium",
+    "description": "Implement a program that applies a Gaussian blur filter to a 2D image. Given an input image represented as a floating-point array and a Gaussian kernel, the program should compute the convolution of t...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "29_top_k_selection",
+    "path": "challenges/medium/29_top_k_selection",
+    "name": "Top K Selection",
+    "difficulty": "medium",
+    "description": "Implement a GPU program that, given a 1D array",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "30_batched_matrix_multiplication",
+    "path": "challenges/medium/30_batched_matrix_multiplication",
+    "name": "Batched Matrix Multiplication",
+    "difficulty": "medium",
+    "description": "Implement a batched matrix multiplication in FP32. Given a batch of matrices",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "32_int8_quantized_matmul",
+    "path": "challenges/medium/32_int8_quantized_matmul",
+    "name": "INT8 Quantized MatMul",
+    "difficulty": "medium",
+    "description": "Implement a quantized matrix multiplication program for 8-bit signed integer matrices. Given two input matrices",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "33_ordinary_least_squares",
+    "path": "challenges/medium/33_ordinary_least_squares",
+    "name": "Ordinary Least Squares",
+    "difficulty": "medium",
+    "description": "Solve the Ordinary Least Squares (OLS) regression problem on a GPU. Given a feature matrix \\(X\\) of size \\(n\\_samples \\times n\\_features\\) and a target vector \\(y\\) of size \\(n\\_samples\\), compute the...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "34_logistic_regression",
+    "path": "challenges/medium/34_logistic_regression",
+    "name": "Logistic Regression",
+    "difficulty": "medium",
+    "description": "Solve the logistic regression problem on a GPU. Given a feature matrix \\(X\\) of size \\(n\\_samples \\times n\\_features\\) and a binary target vector \\(y\\) of size \\(n\\_samples\\) (containing only 0s and 1...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "35_monte_carlo_integration",
+    "path": "challenges/medium/35_monte_carlo_integration",
+    "name": "Monte Carlo Integration",
+    "difficulty": "medium",
+    "description": "Implement Monte Carlo integration on a GPU. Given a set of function values \\(y_i = f(x_i)\\) sampled at random points \\(x_i\\) uniformly distributed in the interval \\([a, b]\\), estimate the definite int...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "36_radix_sort",
+    "path": "challenges/medium/36_radix_sort",
+    "name": "Radix Sort",
+    "difficulty": "medium",
+    "description": "Implement a radix sort algorithm that sorts an array of 32-bit unsigned integers on a GPU. The program should take an input array of unsigned integers and sort them in ascending order using the radix ...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "37_matrix_power",
+    "path": "challenges/medium/37_matrix_power",
+    "name": "Matrix Power",
+    "difficulty": "medium",
+    "description": "Implement a GPU program that raises a square matrix \\(A\\) of size \\(N \\times N\\) to an integer power \\(P\\).",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "38_nearest_neighbor",
+    "path": "challenges/medium/38_nearest_neighbor",
+    "name": "Nearest Neighbor",
+    "difficulty": "medium",
+    "description": "Implement a GPU program that, for",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "40_batch_normalization",
+    "path": "challenges/medium/40_batch_normalization",
+    "name": "Batch Normalization",
+    "difficulty": "medium",
+    "description": "Implement batch normalization forward pass for 2D input tensors. Given an input tensor of shape [N, C] where N is the batch size and C is the number of features, compute the normalized output using le...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "42_2d_max_pooling",
+    "path": "challenges/medium/42_2d_max_pooling",
+    "name": "2D Max Pooling",
+    "difficulty": "medium",
+    "description": "Implement a 2D max pooling operation for image/feature map downsampling. The program should take an input tensor and produce an output tensor by applying max pooling with specified kernel size, stride...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "45_count_3d_array_element",
+    "path": "challenges/medium/45_count_3d_array_element",
+    "name": "Count 3D Array Element",
+    "difficulty": "medium",
+    "description": "Write a GPU program that counts the number of elements with the integer value p in an 3D array of 32-bit integers. The program should count the number of elements with p in an 3D array. You are given ...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "46_bfs_shortest_path",
+    "path": "challenges/medium/46_bfs_shortest_path",
+    "name": "BFS Shortest Path",
+    "difficulty": "medium",
+    "description": "Implement a program that finds the shortest path in an unweighted 2D grid using Breadth-First Search (BFS). Given a grid with obstacles and start/end positions, return the minimum number of steps need...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "47_subarray_sum",
+    "path": "challenges/medium/47_subarray_sum",
+    "name": "Subarray Sum",
+    "difficulty": "medium",
+    "description": "Implement a program that computes the sum of a subarray of 32-bit integers. You are given an input array",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "48_2d_subarray_sum",
+    "path": "challenges/medium/48_2d_subarray_sum",
+    "name": "2D Subarray Sum",
+    "difficulty": "medium",
+    "description": "Implement a program that computes the sum of a 2D subarray of 32-bit integers. You are given an input 2D array",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "49_3d_subarray_sum",
+    "path": "challenges/medium/49_3d_subarray_sum",
+    "name": "3D Subarray Sum",
+    "difficulty": "medium",
+    "description": "Implement a program that computes the sum of a 3D subarray of 32-bit integers. You are given an input 3D array",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "4_reduction",
+    "path": "challenges/medium/4_reduction",
+    "name": "Reduction",
+    "difficulty": "medium",
+    "description": "Write a CUDA program that performs parallel reduction on an array of 32-bit floating point numbers to compute their sum. The program should take an input array and produce a single output value contai...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "50_rms_normalization",
+    "path": "challenges/medium/50_rms_normalization",
+    "name": "RMS Normalization",
+    "difficulty": "medium",
+    "description": "Implement RMS Normalization forward pass for 1D input vectors. Given an input tensor of shape [N] where N is the number of elements, compute the normalized output using a scalar scale (",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "51_max_subarray_sum",
+    "path": "challenges/medium/51_max_subarray_sum",
+    "name": "Max Subarray Sum",
+    "difficulty": "medium",
+    "description": "Implement a program that computes the maximum sum of any contiguous subarray of length exactly",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "55_attn_w_linear_bias",
+    "path": "challenges/medium/55_attn_w_linear_bias",
+    "name": "Attention with Linear Biases",
+    "difficulty": "medium",
+    "description": "Implement Attention with Linear Biases (ALiBi), following the method described in",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "5_softmax",
+    "path": "challenges/medium/5_softmax",
+    "name": "Softmax",
+    "difficulty": "medium",
+    "description": "Write a program that computes the softmax function for an array of 32-bit floating-point numbers on a GPU. The softmax function is defined as follows:",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "6_softmax_attention",
+    "path": "challenges/medium/6_softmax_attention",
+    "name": "Softmax Attention",
+    "difficulty": "medium",
+    "description": "Implement a CUDA program that computes the softmax attention operation for a given set of matrices. Given the query matrix",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "11_3d_convolution",
+    "path": "challenges/hard/11_3d_convolution",
+    "name": "3D Convolution",
+    "difficulty": "hard",
+    "description": "Implement a program that performs a 3D convolution operation. Given a 3D input volume and a 3D kernel (filter), compute the convolved output. The convolution should use a \"valid\" boundary condition (n...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "12_multi_head_attention",
+    "path": "challenges/hard/12_multi_head_attention",
+    "name": "Multi-Head Attention",
+    "difficulty": "hard",
+    "description": "Implement a program for multi-head self-attention. Given three input matrices \\(Q\\) (queries), \\(K\\) (keys), and \\(V\\) (values) of size \\(N \\times d_{\\text{model}}\\), compute: \\[ \\text{MultiHead}(Q,K,...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "14_multi_agent_sim",
+    "path": "challenges/hard/14_multi_agent_sim",
+    "name": "Multi-Agent Simulation",
+    "difficulty": "hard",
+    "description": "Implement a program for a multi-agent flocking simulation (boids). The input consists of:",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "20_kmeans_clustering",
+    "path": "challenges/hard/20_kmeans_clustering",
+    "name": "K-Means Clustering",
+    "difficulty": "hard",
+    "description": "Implement the k-means clustering algorithm for 2D points. Given arrays of x and y coordinates for data points, initial centroids, and other parameters, assign each point to the nearest centroid and up...",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "39_Fast_Fourier_transform",
+    "path": "challenges/hard/39_Fast_Fourier_transform",
+    "name": "Fast Fourier Transform",
+    "difficulty": "hard",
+    "description": "Implement a GPU program that computes the Fast Fourier Transform (FFT) of a complex-valued 1-D signal. Given an input",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "53_casual_attention",
+    "path": "challenges/hard/53_casual_attention",
+    "name": "Causal Self-Attention",
+    "difficulty": "hard",
+    "description": "Implement Causal (masked) Self-Attention for a given set of matrices. Given the query matrix",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  },
+  {
+    "id": "56_linear_attention",
+    "path": "challenges/hard/56_linear_attention",
+    "name": "Linear Self-Attention",
+    "difficulty": "hard",
+    "description": "Implement",
+    "access_tier": "free",
+    "frameworks": [
+      "mojo",
+      "cu",
+      "triton",
+      "cute",
+      "pytorch"
+    ]
+  }
+]

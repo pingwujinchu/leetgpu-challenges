@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetGPU - GPU编程在线测试平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🚀 LeetGPU</h1>
+                <p>GPU编程在线测试平台</p>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="active">题库</a>
+                <a href="/quiz">随机测验</a>
+                <div class="gpu-selector">
+                    <label for="gpu-select">🎮 选择GPU型号:</label>
+                    <select id="gpu-select">
+                        <option value="">选择GPU型号...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number" id="total-challenges">0</div>
+                <div class="stat-label">总题数</div>
+            </div>
+            <div class="stat-card stat-easy">
+                <div class="stat-number" id="easy-challenges">0</div>
+                <div class="stat-label">简单</div>
+            </div>
+            <div class="stat-card stat-medium">
+                <div class="stat-number" id="medium-challenges">0</div>
+                <div class="stat-label">中等</div>
+            </div>
+            <div class="stat-card stat-hard">
+                <div class="stat-number" id="hard-challenges">0</div>
+                <div class="stat-label">困难</div>
+            </div>
+        </div>
+
+        <!-- GPU Info Display -->
+        <div id="gpu-info" class="gpu-info" style="display: none;">
+            <h3>当前选择的GPU</h3>
+            <div id="gpu-details"></div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <input type="text" id="search-input" placeholder="🔍 搜索题目..." />
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-difficulty="all">全部</button>
+                <button class="filter-btn" data-difficulty="easy">简单</button>
+                <button class="filter-btn" data-difficulty="medium">中等</button>
+                <button class="filter-btn" data-difficulty="hard">困难</button>
+            </div>
+        </div>
+
+        <!-- Challenge List -->
+        <div class="challenges-grid" id="challenges-grid">
+            <!-- Challenges will be loaded here -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 LeetGPU - GPU编程挑战平台</p>
+            <p>支持 CUDA, PyTorch, Triton, Mojo 等多种框架</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
