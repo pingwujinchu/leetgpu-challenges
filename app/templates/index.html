@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LeetGPU Online Tester</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>LeetGPU 在线测试平台</h1>
+    <p>选择题目，查看描述，并在所选 GPU 上运行参考实现示例测试。</p>
+  </header>
+
+  <section>
+    <h2>可用 GPU</h2>
+    {% if gpus %}
+      <ul>
+        {% for gpu in gpus %}
+          <li>#{{ gpu.index }} (物理: {{ gpu.physical_index }}) - {{ gpu.name }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>未检测到可用 GPU（或无 nvidia-smi）。</p>
+    {% endif %}
+  </section>
+
+  <section>
+    <h2>题目列表</h2>
+    <div class="grid">
+      {% for c in challenges %}
+        <a class="card" href="/challenge/{{ c.difficulty }}/{{ c.folder_name }}">
+          <div class="title">{{ c.difficulty }} / {{ c.folder_name }}</div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+</body>
+</html>
